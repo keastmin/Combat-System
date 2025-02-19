@@ -13,9 +13,17 @@ public partial class PlayerMover : MonoBehaviour
         _velocityInput = direction * speed;
     }
 
+    public void ClearVelocity()
+    {
+        InitValiable();
+        _velocityInput = Vector3.zero;
+        _gravityForce = 0f;
+    }
+
     public void Jump(float jumpForce)
     {
         _yAxisVelocity = jumpForce;
         _gravityForce = 0f;
+        _isJumping = true;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 // This is the ground detection part of the PlayerMover class.
 public partial class PlayerMover : MonoBehaviour
 {
-    public bool GroundDetect(out GroundInfo groundInfo, Vector3 rayPosition, float rayDistance, float rayRadius, float detectDistance, float detectThreshold, LayerMask layer)
+    public bool GroundDetect(out GroundInfo groundInfo, Vector3 rayPosition, float rayDistance, float rayRadius, float detectDistance, LayerMask layer)
     {
         bool groundDetected = false;
         RaycastHit hit;
@@ -20,8 +20,8 @@ public partial class PlayerMover : MonoBehaviour
 
         if (groundDetected)
         {
-            groundInfo.IsGround = hit.distance <= (detectDistance + detectThreshold);
-            groundInfo.Distance = hit.distance;
+            groundInfo.IsGround = hit.distance <= (detectDistance - rayRadius);
+            groundInfo.Distance = hit.distance + rayRadius;
             groundInfo.Normal = hit.normal;
             groundInfo.Collider = hit.collider;
 

@@ -40,6 +40,7 @@ public class InputController : MonoBehaviour
         RunInputDetect();
         WalkInputDetect();
         DodgeInputDetect();
+        JumpInputDetect();
     }
 
     private void MoveInputDetect()
@@ -62,7 +63,8 @@ public class InputController : MonoBehaviour
     {
         if(_walkAction != null)
         {
-            _walkInput = _walkAction.triggered;
+            _walkInput = _walkAction.phase == InputActionPhase.Started ||  
+                         _walkAction.phase == InputActionPhase.Performed;
         }
     }
 
