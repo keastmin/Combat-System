@@ -869,6 +869,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 183324
   packageName: Powerful Sword Pack(Great Sword + Katana)
-  packageVersion: 2.1
-  assetPath: Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/1_Movements/12__Turn_in_place/RootMotion/M_katana_Blade@Jogging_A_To_Idle_ver_A_Turn_L90_Root.FBX
-  uploadId: 704995
+  packageVersion: 2.1.1
+  assetPath: Assets/Resources/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/1_Movements/12__Turn_in_place/RootMotion/M_katana_Blade@Jogging_A_To_Idle_ver_A_Turn_L90_Root.FBX
+  uploadId: 737837

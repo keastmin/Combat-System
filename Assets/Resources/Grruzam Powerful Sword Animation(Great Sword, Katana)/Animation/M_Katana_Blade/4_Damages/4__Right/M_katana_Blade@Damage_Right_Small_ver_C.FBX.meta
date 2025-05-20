@@ -1402,6 +1402,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 183324
   packageName: Powerful Sword Pack(Great Sword + Katana)
-  packageVersion: 2.1
-  assetPath: Assets/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/4_Damages/4__Right/M_katana_Blade@Damage_Right_Small_ver_C.FBX
-  uploadId: 704995
+  packageVersion: 2.1.1
+  assetPath: Assets/Resources/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/4_Damages/4__Right/M_katana_Blade@Damage_Right_Small_ver_C.FBX
+  uploadId: 737837
