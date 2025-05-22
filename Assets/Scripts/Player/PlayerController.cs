@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviour
     private Animator _playerAnimator;
     private PlayerStateMachine _stateMachine;
 
-
     public InputController InputController => _inputController;
     public PlayerMover PlayerMover => _playerMover;
     public Animator PlayerAnimator => _playerAnimator;
@@ -72,7 +71,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update()
-    {
+    { 
         StateMachine.Execute();
     }
 
