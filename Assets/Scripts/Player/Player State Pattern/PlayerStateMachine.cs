@@ -2,62 +2,49 @@ using UnityEngine;
 
 public class PlayerStateMachine
 {
-    public IState CurrentState { get; private set; }
+    public IdleState IdleState; // 기본 상태
+    public JogState JogState; // 조깅 상태
 
-    public IdleState idleState;
-    public WalkState walkState;
-    public JogState jogState;
-    public RunState runState;
-    public DodgeState dodgeState;
-    public AttackState attackState;
+    private IState _currentState;
+    public IState CurrentState => _currentState; // 현재 상태
 
-    public PlayerStateMachine(PlayerController player)
+    // 생성자를 통해 각 상태 초기화
+    public PlayerStateMachine(PlayerController playerController)
     {
-        idleState = new IdleState(player);
-        walkState = new WalkState(player);
-        jogState = new JogState(player);
-        runState = new RunState(player);
-        dodgeState = new DodgeState(player);
-        attackState = new AttackState(player);
+        IdleState = new IdleState(playerController);
+        JogState = new JogState(playerController);
     }
 
-    public void InitState(IState initState)
+    // 상태 초기화
+    public void Init(IState initState)
     {
-        CurrentState = initState;
-        CurrentState.Enter();
+        _currentState = initState;
+        _currentState?.Enter();
     }
 
-    public void TransitionTo(IState nextState)
+    // 상태 전환
+    public void Transition(IState nextState)
     {
-        if(CurrentState != null)
-        {
-            CurrentState.Exit();
-            CurrentState = nextState;
-            CurrentState.Enter();
-        }
+        _currentState?.Exit();
+        _currentState = nextState;
+        _currentState?.Enter();
     }
 
+    // 상태 Update 반복
     public void Execute()
     {
-        if(CurrentState != null)
-        {
-            CurrentState.Execute();
-        }
+        _currentState?.Execute();
     }
 
+    // 상태 Fixed Update 반복
     public void FixedExecute()
     {
-        if (CurrentState != null)
-        {
-            CurrentState.FixedExecute();
-        }
+        _currentState?.FixedExecute();
     }
 
-    public void LateExecute()
+    // 상태 Animator Move 반복
+    public void AnimatorMove()
     {
-        if (CurrentState != null)
-        {
-            CurrentState.LateExecute();
-        }
+        _currentState?.AnimatorMove();
     }
 }

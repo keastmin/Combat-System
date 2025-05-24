@@ -2,45 +2,31 @@ using UnityEngine;
 
 public class IdleState : IState
 {
-    PlayerController player;
+    private PlayerController _controller;
 
-    public IdleState(PlayerController player)
+    public IdleState(PlayerController controller)
     {
-        this.player = player;
+        _controller = controller;
     }
 
     public void Enter()
     {
-        player.StateText.text = "Current State: Idle";
-        player.TargetSpeed = 0f;
+
     }
 
     public void Execute()
     {
-        if(player.InputController.MoveInput != Vector2.zero)
-        {
-            player.StateMachine.TransitionTo(player.StateMachine.jogState);
-        }
+        _controller.Anim.SetFloat("Speed", _controller.InputC.MoveInput.sqrMagnitude);
 
-        if (player.InputController.RunInput)
-        {
-            player.StateMachine.TransitionTo(player.StateMachine.dodgeState);
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            player.StateMachine.TransitionTo(player.StateMachine.attackState);
-        }
+        TransitionTo();
     }
 
     public void FixedExecute()
     {
-        player.LerpSpeed(Time.fixedDeltaTime);
-        player.PlayerMover.Move(player.Forward * player.CurrentSpeed);
-        //player.PlayerAnimator.SetFloat("Speed", player.CurrentSpeed);
+
     }
 
-    public void LateExecute()
+    public void AnimatorMove()
     {
 
     }
@@ -48,5 +34,13 @@ public class IdleState : IState
     public void Exit()
     {
 
+    }
+
+    private void TransitionTo()
+    {
+        if(_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.JogState);
+        }
     }
 }

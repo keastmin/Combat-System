@@ -1,64 +1,30 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
-public partial class PlayerMover : MonoBehaviour
+[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
+public class PlayerMover : MonoBehaviour
 {
-    #region Inspector Fields
+    [Header("콜라이더")]
+    [SerializeField] private float _height = 2f; // 콜라이더 높이
+    [SerializeField] private float _thickness = 1f; // 콜라이더 두께
+    [SerializeField] private Vector3 _offset = Vector3.zero; // 콜라이더 오프셋
 
-    [Header("Collider")]
-    [SerializeField][Min(0)] private float _height = 2.0f;
-    [SerializeField][Min(0)] private float _radius = 0.5f;
-    [SerializeField] private Vector3 _colliderOffset = Vector3.zero;
+    [Header("물리")]
+    [SerializeField] private float _gravityAcc = 9.81f; // 중력 가속도
+    [SerializeField] private float _maxGravitySpeed = 20f; // 최대 중력 속도
 
-    [Header("Step")]
-    [SerializeField] [Min(0)] private float _stepHeight = 0.3f;
-    [SerializeField] [Min(0)] private float _stepSmooth = 0.1f;
+    [Header("계단")]
+    [SerializeField][Min(0f)] private float _stepHeight = 0.3f; // 건널 수 있는 계단 높이
 
-    [Header("Physics")]
-    [SerializeField] private bool _useGravity = true;
-    [SerializeField][Min(0)] private float _gravityAcc = 20f;
-    [SerializeField][Min(0)] private float _maxFallSpeed = 15f;
+    private Rigidbody _rigidbody;
+    private CapsuleCollider _capsuleCollider;
 
-    [Header("Ground")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] [Min(0)] private float _rayDistance = 10f;
-    [SerializeField] [Min(0)] private float _rayRadius = 0.1f;
-    [SerializeField] private float _detectThreshold = 0.01f;
-
-    [Header("Debug")]
-    [SerializeField] private bool _groundDetectDebug = true;
-
-    #endregion
-
-    // Velocity
-    private Vector3 _calculatedVelocity = Vector3.zero;
-    private Vector3 _velocityInput = Vector3.zero;
-    private float _gravityForce = 0f;
-    private float _yAxisVelocity = 0f;
-
-    // Ground
-    GroundInfo _groundInfo = GroundInfo.Empty;
-    bool _isGround = false;
-
-    // Jump
-    private bool _isJumping = false;
-
-    // Cache
-    private float _colliderHalfHeight;
-
-    // Properties
-    public bool IsGround => _isGround;
-    public bool UseGravity { get=>_useGravity; set => _useGravity = value; }
-
-    Rigidbody _rigidbody;
-    CapsuleCollider _capsuleCollider;
+    // 입력
+    private Vector3 _inputVelocity;
 
     private void OnValidate()
     {
         InitComponents();
-        InitColliderProperties();
-
-        _colliderHalfHeight = _capsuleCollider.height / 2f;
+        SetColliderDimention();
     }
 
     private void Awake()
@@ -68,67 +34,72 @@ public partial class PlayerMover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveProcess(Time.fixedDeltaTime);
+        MoveVelocity(_inputVelocity);
+        InitValue();
     }
 
-    #region Init
+    #region 코어
 
-    // Set Rigidbody and CapsuleCollider components
+    private void MoveVelocity(Vector3 velocity)
+    {
+        _rigidbody.linearVelocity = velocity;
+    }
+
+    private void InitValue()
+    {
+        _inputVelocity = Vector3.zero;
+    }
+
+    #endregion
+
+    #region API
+
+    public void Move(Vector3 velocity)
+    {
+        _inputVelocity = velocity;
+    }
+
+    #endregion
+
+    #region 초기화
+
     private void InitComponents()
     {
         TryGetComponent(out _rigidbody);
         _rigidbody.useGravity = false;
         _rigidbody.freezeRotation = true;
-        _rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+        _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
         TryGetComponent(out _capsuleCollider);
     }
 
-    // Set CapsuleCollider properties
-    private void InitColliderProperties()
+    private void SetColliderDimention()
     {
-        ColliderUtill.SetHeight(_capsuleCollider, _height, _stepHeight, _colliderOffset);
-        ColliderUtill.SetRadius(_capsuleCollider, _radius);
+        SetColliderHeight();
+        SetColliderRadius();
     }
 
-    #endregion
-
-    #region Gizmo Debug
-
-    private void OnDrawGizmos()
+    private void SetColliderHeight()
     {
-        if (_groundDetectDebug)
-        {
-            GroundDetectDebug();
-        }
+        if (_stepHeight > _height) _stepHeight = _height;
+        float centerY = (_height + _stepHeight) / 2f;
+        Vector3 center = _offset + new Vector3(0f, centerY, 0f);
+        _capsuleCollider.height = _height - _stepHeight;
+        _capsuleCollider.center = center;
+        LimitColliderValue();
     }
 
-    private void GroundDetectDebug()
+    private void SetColliderRadius()
     {
-        Gizmos.color = Color.red;
-        if (_rayRadius > 0)
-        {
-            if (Physics.SphereCast(_capsuleCollider.bounds.center, _rayRadius, Vector3.down, out RaycastHit hit, _rayDistance, groundLayer))
-            {
-                if (hit.distance <= (_detectThreshold + (_capsuleCollider.height / 2f) + _stepHeight) - _rayRadius)
-                {
-                    Gizmos.color = Color.green;
-                }
-                Gizmos.DrawWireSphere(hit.point + Vector3.up * _rayRadius, _rayRadius);
-            }
-        }
-        else
-        {
-            if (Physics.Raycast(_capsuleCollider.bounds.center, Vector3.down, out RaycastHit hit, _rayDistance, groundLayer))
-            {
-                if (hit.distance <= (_detectThreshold + (_capsuleCollider.height / 2f) + _stepHeight) - _rayRadius)
-                {
-                    Gizmos.color = Color.green;
-                }
-            }
-        }
-        Gizmos.DrawRay(_capsuleCollider.bounds.center, Vector3.down * _rayDistance);
+        float radius = _thickness / 2f;
+        _capsuleCollider.radius = radius;
+        LimitColliderValue();
+    }
+
+    private void LimitColliderValue()
+    {
+        if (_capsuleCollider.height < _capsuleCollider.radius * 2f) _capsuleCollider.radius = _capsuleCollider.height / 2f;
     }
 
     #endregion

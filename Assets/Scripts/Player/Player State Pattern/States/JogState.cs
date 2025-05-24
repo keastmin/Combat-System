@@ -2,46 +2,31 @@ using UnityEngine;
 
 public class JogState : IState
 {
-    PlayerController player;
+    private PlayerController _controller;
 
-    public JogState(PlayerController player)
+    public JogState(PlayerController controller)
     {
-        this.player = player;
+        _controller = controller;
     }
 
     public void Enter()
     {
-        player.StateText.text = "Current State: Jog";
-        player.TargetSpeed = player.JogSpeed;
+
     }
 
     public void Execute()
     {
-        if (player.InputController.MoveInput == Vector2.zero)
-        {
-            player.StateMachine.TransitionTo(player.StateMachine.idleState);
-        }
+        _controller.Anim.SetFloat("Speed", _controller.InputC.MoveInput.magnitude);
 
-        if (player.InputController.WalkInput)
-        {
-            player.StateMachine.TransitionTo(player.StateMachine.walkState);
-        }
-
-        if (player.InputController.RunInput)
-        {
-            player.StateMachine.TransitionTo(player.StateMachine.dodgeState);
-        }
+        TransitionTo();
     }
 
     public void FixedExecute()
     {
-        player.RotationBasedCamera(Time.fixedDeltaTime);
-        player.LerpSpeed(Time.fixedDeltaTime);
-        player.PlayerMover.Move(player.Forward * player.CurrentSpeed);
-        player.PlayerAnimator.SetFloat("Speed", player.CurrentSpeed);
+
     }
 
-    public void LateExecute()
+    public void AnimatorMove()
     {
 
     }
@@ -49,5 +34,13 @@ public class JogState : IState
     public void Exit()
     {
 
+    }
+
+    private void TransitionTo()
+    {
+        if(_controller.InputC.MoveInput.sqrMagnitude < 0.1f)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.IdleState);
+        }
     }
 }

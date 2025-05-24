@@ -1,124 +1,72 @@
-using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-[RequireComponent(typeof(InputController), typeof(PlayerMover))]
+[RequireComponent(typeof(InputController), typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Debug")]
-    public TMP_Text StateText;
+    [Header("평행 움직임")]
+    [SerializeField] private float _walkSpeed = 3f; // 걷기 속도
+    [SerializeField] private float _jogSpeed = 5f; // 조깅 속도
+    [SerializeField] private float _runSpeed = 8f; // 달리기 속도
+    [SerializeField] private float _fastRunSpeed = 9f; // 빠른 달리기 속도
     
-    [Header("Movement")]
-    [SerializeField] private float _walkSpeed = 2f;
-    [SerializeField] private float _jogSpeed = 5f;
-    [SerializeField] private float _runSpeed = 8f;
+    [Header("점프")]    
+    [SerializeField] private float _jumpSpeed = 5f; // 점프 속도
 
-    [Header("Dodge")]
-    [SerializeField] private float _dodgeSpeed = 8f;
-    [SerializeField] private float _dodgeTime = 1f;
 
-    // state context
-    [SerializeField] private StateContext _stateContext;
-
-    // move
-    private int _moveLevel = 1; // 0: walk, 1: jog, 2: run
-    
-    // velocity
-    private float _targetSpeed;
-    private float _currentSpeed;
-
-    // rotation
-    private Transform _cameraTransform;
-    private float _rotationSpeed = 10f;
-
-    // properties
-    public float WalkSpeed => _walkSpeed;
-    public float JogSpeed => _jogSpeed;
-    public float RunSpeed => _runSpeed;
-    public float DodgeSpeed => _dodgeSpeed;
-    public float DodgeTime => _dodgeTime;
-    public float TargetSpeed { get => _targetSpeed; set => _targetSpeed = value; }
-    public float CurrentSpeed { get => _currentSpeed; set => _currentSpeed = value; }
-    public int MoveLevel { get => _moveLevel; set => _moveLevel = value; }
-    public Vector3 Forward { get => transform.forward; }
+    // 상태 머신
+    private PlayerStateMachine _stateMachine;
     public PlayerStateMachine StateMachine => _stateMachine;
 
-    private InputController _inputController;
-    private PlayerMover _playerMover;
-    private Animator _playerAnimator;
-    private PlayerStateMachine _stateMachine;
+    // 입력
+    private InputController _inputC;
+    public InputController InputC => _inputC;
 
-    public InputController InputController => _inputController;
-    public PlayerMover PlayerMover => _playerMover;
-    public Animator PlayerAnimator => _playerAnimator;
+    // 애니메이션
+    private Animator _anim;
+    public Animator Anim => _anim;
 
+    // 플레이어 무버
+    private PlayerMover _mover;
+    public PlayerMover Mover => _mover;
+    
     private void Awake()
     {
-        TryGetComponent(out _inputController);
-        TryGetComponent(out _playerMover);
-        TryGetComponent(out _playerAnimator);
-
-        _cameraTransform = Camera.main.transform;
-
-        _stateMachine = new PlayerStateMachine(this);
+        InitComponent();
     }
 
-    void Start()
+    private void Start()
     {
-        _stateMachine.InitState(_stateMachine.idleState);
+        InitStateMachine();
     }
 
-    void Update()
-    { 
-        StateMachine.Execute();
+    private void Update()
+    {
+        _stateMachine?.Execute();
     }
 
     private void FixedUpdate()
     {
-        StateMachine.FixedExecute();
-        PlayerAnimator.SetFloat("Speed", CurrentSpeed);
-        PlayerAnimator.SetBool("IsGround", PlayerMover.IsGround);
+        _stateMachine?.FixedExecute();
     }
 
-    #region Rotation
-
-    public void RotationBasedCamera(float delta)
+    private void OnAnimatorMove()
     {
-        if (InputController.MoveInput.magnitude > 0)
-        {
-            Vector3 direction = CalculateDirection();
-
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, delta * _rotationSpeed);
-        }
+        _stateMachine?.AnimatorMove();
     }
 
-    public Vector3 CalculateDirection()
+    private void InitComponent()
     {
-        Vector3 direction = Vector3.zero;
+        TryGetComponent(out _anim);
+        _anim.applyRootMotion = false;
 
-        if(_cameraTransform != null)
-        {
-            Vector3 forward = _cameraTransform.forward;
-            Vector3 right = _cameraTransform.right;
-            forward.y = right.y = 0;
+        TryGetComponent(out _inputC);
 
-            direction = forward * InputController.MoveInput.y + right * InputController.MoveInput.x;
-        }
-
-        return direction;
+        TryGetComponent(out _mover);
     }
 
-    #endregion
-    
-    #region Movement
-
-    public void LerpSpeed(float delta)
+    private void InitStateMachine()
     {
-        _currentSpeed = Mathf.Lerp(_currentSpeed, _targetSpeed, delta * 8f);
+        _stateMachine = new PlayerStateMachine(this);
+        _stateMachine.Init(_stateMachine.IdleState); // 기본 상태를 Idle로 설정
     }
-
-    #endregion
 }
