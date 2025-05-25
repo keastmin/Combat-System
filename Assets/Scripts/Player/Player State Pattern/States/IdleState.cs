@@ -11,19 +11,19 @@ public class IdleState : IState
 
     public void Enter()
     {
-
+        _controller.SetTargetSpeed(0f);
     }
 
     public void Execute()
     {
-        _controller.Anim.SetFloat("Speed", _controller.InputC.MoveInput.sqrMagnitude);
+        _controller.Anim.SetFloat("Speed", _controller.CurrentSpeed);
 
         TransitionTo();
     }
 
     public void FixedExecute()
     {
-
+        _controller.Move();
     }
 
     public void AnimatorMove()

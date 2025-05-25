@@ -4,16 +4,16 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class InputController : MonoBehaviour
 {
-    // Player Input ÄÄÆ÷³ÍÆ®
+    // Player Input ì»´í¬ë„ŒíŠ¸
     PlayerInput _input;
 
-    // ¿ÜºÎ »ç¿ë º¯¼ö
+    // ì™¸ë¶€ ì‚¬ìš© ë³€ìˆ˜
     private Vector2 _moveInput = Vector2.zero; // WASD
     private bool _walkInput = false; // Left Ctrl
     private bool _jumpInput = false; // Space
 
-    // ÇÁ·ÎÆÛÆ¼
-    public Vector2 MoveInput => _moveInput;
+    // í”„ë¡œí¼í‹°
+    public Vector3 MoveInput => new Vector3(_moveInput.x, 0f, _moveInput.y);
     public bool WalkInput => _walkInput;
     public bool JumpInput => _jumpInput;
 

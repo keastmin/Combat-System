@@ -2,49 +2,51 @@ using UnityEngine;
 
 public class PlayerStateMachine
 {
-    public IdleState IdleState; // ±âº» »óÅÂ
-    public JogState JogState; // Á¶±ë »óÅÂ
+    public IdleState IdleState; // ê¸°ë³¸ ìƒíƒœ
+    public JogState JogState; // ì¡°ê¹… ìƒíƒœ
 
-    private IState _currentState;
-    public IState CurrentState => _currentState; // ÇöÀç »óÅÂ
+    private IState _prevState; // ì´ì „ ìƒíƒœ (í•„ìš”ì‹œ ì‚¬ìš© ê°€ëŠ¥)
+    private IState _currState;
+    public IState PrevState => _prevState; // ì´ì „ ìƒíƒœ
+    public IState CurrState => _currState; // í˜„ì¬ ìƒíƒœ
 
-    // »ı¼ºÀÚ¸¦ ÅëÇØ °¢ »óÅÂ ÃÊ±âÈ­
+    // ìƒì„±ìë¥¼ í†µí•´ ê° ìƒíƒœ ì´ˆê¸°í™”
     public PlayerStateMachine(PlayerController playerController)
     {
         IdleState = new IdleState(playerController);
         JogState = new JogState(playerController);
     }
 
-    // »óÅÂ ÃÊ±âÈ­
+    // ìƒíƒœ ì´ˆê¸°í™”
     public void Init(IState initState)
     {
-        _currentState = initState;
-        _currentState?.Enter();
+        _currState = initState;
+        _currState?.Enter();
     }
 
-    // »óÅÂ ÀüÈ¯
+    // ìƒíƒœ ì „í™˜
     public void Transition(IState nextState)
     {
-        _currentState?.Exit();
-        _currentState = nextState;
-        _currentState?.Enter();
+        _currState?.Exit();
+        _currState = nextState;
+        _currState?.Enter();
     }
 
-    // »óÅÂ Update ¹İº¹
+    // ìƒíƒœ Update ë°˜ë³µ
     public void Execute()
     {
-        _currentState?.Execute();
+        _currState?.Execute();
     }
 
-    // »óÅÂ Fixed Update ¹İº¹
+    // ìƒíƒœ Fixed Update ë°˜ë³µ
     public void FixedExecute()
     {
-        _currentState?.FixedExecute();
+        _currState?.FixedExecute();
     }
 
-    // »óÅÂ Animator Move ¹İº¹
+    // ìƒíƒœ Animator Move ë°˜ë³µ
     public void AnimatorMove()
     {
-        _currentState?.AnimatorMove();
+        _currState?.AnimatorMove();
     }
 }

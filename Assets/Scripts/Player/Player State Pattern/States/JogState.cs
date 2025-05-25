@@ -11,19 +11,19 @@ public class JogState : IState
 
     public void Enter()
     {
-
+        _controller.SetTargetSpeed(_controller.JogSpeed);
     }
 
     public void Execute()
     {
-        _controller.Anim.SetFloat("Speed", _controller.InputC.MoveInput.magnitude);
+        _controller.Anim.SetFloat("Speed", _controller.CurrentSpeed);
 
         TransitionTo();
     }
 
     public void FixedExecute()
     {
-
+        _controller.Move();
     }
 
     public void AnimatorMove()
