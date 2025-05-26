@@ -1,23 +1,23 @@
 using UnityEngine;
 
-public class JogState : IState
+public class WalkState : IState
 {
     private PlayerController _controller;
 
-    public JogState(PlayerController controller)
+    public WalkState(PlayerController controller)
     {
         _controller = controller;
     }
 
     public void Enter()
     {
-        _controller.SetTargetSpeed(_controller.JogSpeed);
+        _controller.SetTargetSpeed(_controller.WalkSpeed);
     }
 
     public void Execute()
     {
         _controller.Anim.SetFloat("Speed", _controller.CurrentSpeed);
-        
+
         TransitionTo();
     }
 
@@ -34,7 +34,7 @@ public class JogState : IState
 
     public void Exit()
     {
-
+        
     }
 
     private void TransitionTo()
@@ -43,9 +43,9 @@ public class JogState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.IdleState);
         }
-        else if (_controller.InputC.WalkInput)
+        else if (!_controller.InputC.WalkInput)
         {
-            _controller.StateMachine.Transition(_controller.StateMachine.WalkState);
+            _controller.StateMachine.Transition(_controller.StateMachine.JogState);
         }
     }
 }

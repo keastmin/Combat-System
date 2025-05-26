@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerStateMachine
 {
     public IdleState IdleState; // 기본 상태
+    public WalkState WalkState; // 걷기 상태
     public JogState JogState; // 조깅 상태
 
     private IState _prevState; // 이전 상태 (필요시 사용 가능)
@@ -14,6 +15,7 @@ public class PlayerStateMachine
     public PlayerStateMachine(PlayerController playerController)
     {
         IdleState = new IdleState(playerController);
+        WalkState = new WalkState(playerController);
         JogState = new JogState(playerController);
     }
 
