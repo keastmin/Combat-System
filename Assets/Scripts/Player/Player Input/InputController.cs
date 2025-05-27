@@ -6,7 +6,10 @@ using UnityEngine.InputSystem;
 public class InputController : MonoBehaviour
 {
     [Header("더블탭")]
-    [SerializeField] private float _doubleTabTime = 0.3f; 
+    [SerializeField] private float _doubleTabTime = 0.3f;
+
+    [Header("달리기 중 턴")]
+    [SerializeField] private float _turnInputTime = 0.1f; // 이동 반대 방향 입력 시간
 
     // Player Input 컴포넌트
     PlayerInput _input;

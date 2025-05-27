@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("회피")]
     [SerializeField] private float _dodgeSpeed = 8f; // 회피 속도
-    [SerializeField] private float _dodgeTime = 0.8f; // 회피 시간
+    [SerializeField] private float _dodgeTime = 0.65f; // 회피 시간
 
     [Header("점프")]    
     [SerializeField] private float _jumpSpeed = 5f; // 점프 속도
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     // 필드 프로퍼티
     public float WalkSpeed => _walkSpeed; // 걷기 속도
     public float JogSpeed => _jogSpeed; // 조깅 속도
+    public float RunSpeed => _runSpeed; // 달리기 속도
     public float DodgeSpeed => _dodgeSpeed; // 회피 속도
     public float DodgeTime => _dodgeTime; // 회피 시간
 
@@ -65,7 +66,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(InputC.DodgeInput);
         LerpCurrentSpeed(_targetSpeed, _currentSpeed, _speedLerpTime);
         _stateMachine?.Execute();
     }

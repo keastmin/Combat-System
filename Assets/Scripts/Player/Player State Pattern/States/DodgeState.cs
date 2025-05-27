@@ -50,7 +50,7 @@ public class DodgeState : IState
         {
             if (_playerController.InputC.MoveInput.sqrMagnitude > 0.1f)
             {
-                _playerController.StateMachine.Transition(_playerController.StateMachine.JogState);
+                _playerController.StateMachine.Transition(_playerController.StateMachine.RunState);
             }
             else
             {
