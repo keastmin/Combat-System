@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     [Header("회전")]
     [SerializeField] private float _rotationSpeed = 10f; // 회전 속도
 
+    [Header("회피")]
+    [SerializeField] private float _dodgeSpeed = 8f; // 회피 속도
+    [SerializeField] private float _dodgeTime = 0.8f; // 회피 시간
+
     [Header("점프")]    
     [SerializeField] private float _jumpSpeed = 5f; // 점프 속도
 
@@ -20,6 +24,8 @@ public class PlayerController : MonoBehaviour
     // 필드 프로퍼티
     public float WalkSpeed => _walkSpeed; // 걷기 속도
     public float JogSpeed => _jogSpeed; // 조깅 속도
+    public float DodgeSpeed => _dodgeSpeed; // 회피 속도
+    public float DodgeTime => _dodgeTime; // 회피 시간
 
     // 속도
     private Vector3 _lastInputDirection; // 마지막 이동 입력 방향
@@ -59,6 +65,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(InputC.DodgeInput);
         LerpCurrentSpeed(_targetSpeed, _currentSpeed, _speedLerpTime);
         _stateMachine?.Execute();
     }
@@ -150,6 +157,31 @@ public class PlayerController : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction); // 목표 회전
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+        }
+    }
+
+    public void SetInputRotation()
+    {
+        if (_mainCamera == null)
+        {
+            Debug.LogError("메인 카메라가 없습니다.");
+            return;
+        }
+
+        Vector3 cameraForward = _mainCamera.transform.forward; // 카메라의 전방 방향
+        Vector3 cameraRight = _mainCamera.transform.right; // 카메라의 우측 방향
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        Vector3 direction = cameraForward * _inputC.MoveInput.z + cameraRight * _inputC.MoveInput.x; // 카메라를 기준으로 입력 방향 계산
+        direction.Normalize(); // 방향 정규화
+
+        if (direction.sqrMagnitude >= 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction); // 목표 회전
+            transform.rotation = targetRotation;
         }
     }
 

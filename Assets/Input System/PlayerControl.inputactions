@@ -38,7 +38,7 @@
                     "id": "2a9aafc8-f5dc-43ec-bb52-e91ff5324c68",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "MultiTap",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {

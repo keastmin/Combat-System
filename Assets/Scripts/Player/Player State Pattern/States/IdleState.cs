@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class IdleState : IState
 {
@@ -38,7 +39,11 @@ public class IdleState : IState
 
     private void TransitionTo()
     {
-        if(_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
+        if (_controller.InputC.DodgeInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
+        }
+        else if(_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.JogState);
         }
