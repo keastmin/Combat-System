@@ -23,7 +23,7 @@ public class WalkState : IState
 
     public void FixedExecute()
     {
-        _controller.Rotate();
+        _controller.Rotate(true, _controller.RotationSpeed);
         _controller.Move();
     }
 
@@ -39,7 +39,7 @@ public class WalkState : IState
 
     private void TransitionTo()
     {
-        if(_controller.InputC.MoveInput.sqrMagnitude < 0.1f)
+        if(_controller.InputC.MoveInput.sqrMagnitude <= 0.1f)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.IdleState);
         }

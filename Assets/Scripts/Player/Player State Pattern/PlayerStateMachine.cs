@@ -21,6 +21,7 @@ public class PlayerStateMachine
         WalkState = new WalkState(playerController);
         JogState = new JogState(playerController);
         RunState = new RunState(playerController);
+        TurnState = new TurnState(playerController);
         DodgeState = new DodgeState(playerController);
     }
 

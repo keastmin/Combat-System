@@ -12,6 +12,7 @@ public class IdleState : IState
 
     public void Enter()
     {
+        Debug.Log("Idle 상태 진입");
         _controller.SetTargetSpeed(0f);
     }
 
@@ -43,7 +44,11 @@ public class IdleState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
         }
-        else if(_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
+        else if (_controller.IsTurn)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.TurnState);
+        }
+        else if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.JogState);
         }

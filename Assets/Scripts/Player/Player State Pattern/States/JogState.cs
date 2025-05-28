@@ -24,7 +24,7 @@ public class JogState : IState
 
     public void FixedExecute()
     {
-        _controller.Rotate();
+        _controller.Rotate(true, _controller.RotationSpeed);
         _controller.Move();
     }
 
@@ -43,6 +43,10 @@ public class JogState : IState
         if (_controller.InputC.DodgeInput)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
+        }
+        else if (_controller.IsTurn)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.TurnState);
         }
         else if (_controller.InputC.MoveInput.sqrMagnitude < 0.1f)
         {
