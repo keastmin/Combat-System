@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
     // 마지막 달리기로부터 턴이 가능한지 체크하는 함수
     private void TurnChecker()
     {
-        if (_canTurn || _currentSpeed >= _walkSpeed + 0.1f)
+        if (_canTurn || _currentSpeed >= _jogSpeed + 0.1f)
         {
             Vector3 cameraForward = _mainCamera.transform.forward;
             Vector3 cameraRight = _mainCamera.transform.right;
@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour
             if (_runEndTime > _canTurnTime)
             {
                 _canTurn = false;
+                _runEndTime = 0f; // 유예 시간 초기화
             }
         }
     }

@@ -4232,10 +4232,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7798607758110610471, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
-      propertyPath: _dodgeTime
-      value: 0.65
-      objectReference: {fileID: 0}
+    - target: {fileID: 1755460181567462940, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 07fe67cbb3aba094290560af332c8c64, type: 2}
     - target: {fileID: 9207538171332864616, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 101.33

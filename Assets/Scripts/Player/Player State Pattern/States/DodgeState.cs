@@ -39,6 +39,8 @@ public class DodgeState : IState
 
     public void Exit()
     {
+        _controller.IsTurn = false; // 회피 상태 종료 시 턴 상태는 해제
+
         _controller.Anim.SetBool("IsDodge", false);
     }
 
