@@ -34,14 +34,22 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private Vector3 _offset = Vector3.zero; // 콜라이더 오프셋
 
     [Header("물리")]
-    [SerializeField] private float _gravityAcc = 9.81f; // 중력 가속도
-    [SerializeField] private float _maxGravitySpeed = 20f; // 최대 중력 속도
+    [SerializeField] private bool _enableGravity = true; // 중력 활성화 여부
+    [SerializeField] private Vector3 _gravityAccel = Vector3.down * 9.81f; // 중력 가속도
+    [SerializeField] private float _gravitySpeedMax = 20f; // 최대 중력 속도
 
     [Header("계단")]
     [Tooltip("지면의 높이가 급격하게 바뀌면 계단 스무딩에 해당 값만큼 딜레이를 줍니다." +
              " 지면의 높이가 급격히 바뀌는 기준: 0.1f * (_stepHeight * 2f) 이상의 차이가 있을 때")]
     [SerializeField][Min(0f)] private float _stepSmoothDelay = 0.1f;
     [SerializeField][Min(0f)] private float _stepHeight = 0.3f; // 건널 수 있는 계단 높이
+    [Tooltip("값이 클수록 계단 스무딩이 더 부드럽게 됩니다.")]
+    [SerializeField][Min(1f)] private float _stepSmooth = 10f; // 계단 스무딩 정도
+    [Tooltip("움직이는 동안 계단 스무딩 부드럽게 동작하기 위한 멀티플러")]
+    [SerializeField][Min(0f)] private float _stepSmoothMovingMultipler = 1f; // 움직일 때의 스무딩 정도
+    [Tooltip("계단 스무딩을 위해 앞뒤로 기울기를 감지할 범위를 설정합니다.")]
+    [SerializeField][Min(0f)] private float _slopeApproxRange = 1f;
+    [SerializeField][Min(0)] private int _slopeApproxIters = 4; // 기울기 근사화 반복 횟수
 
     [Header("지면 검사")]
     [Tooltip("지면 레이어 정의")]
@@ -54,6 +62,8 @@ public class PlayerMover : MonoBehaviour
     [Header("디버그")]
     [Tooltip("지면 감지를 위한 디버그 기즈모를 표시합니다.")]
     [SerializeField] private bool _debugGroundDetection = false; // 지면 검사 디버그
+    [Tooltip("지면의 기울기 근사를 위한 디버그 기즈모를 표시합니다.")]
+    [SerializeField] private bool _debugSlopeApproximation = false; // 기울기 근사 디버그
 
     #endregion
 
@@ -73,14 +83,19 @@ public class PlayerMover : MonoBehaviour
     private bool _isOnGroundChangedThisFrame;
     private bool _shouldLeaveGround = false; // 지면을 떠나야 하는지 여부
     private bool _isTouchingCeiling = false; // 천장에 닿았는지 여부
-    private Collider _groundCollider = null;
+    private Collider _groundCollider = null; // 지면의 콜라이더
+    private Rigidbody _groundRb = null; // 지면의 Rigidbody
     private Vector3 _lastNonZeroDirection = Vector3.forward; // 마지막으로 입력된 방향(0이 아닌 벡터)
 
     // 스텝 스무딩
+    private Vector3 _slopePoint = Vector3.zero;
+    private Vector3 _slopeNormal = Vector3.up;
     private float _stepSmoothDelayCounter = 0f;
 
     // 속도
-    private Vector3 _velocityGravity; // 중력 속도
+    private Vector3 _velocityGroundRb = Vector3.zero; // 지면에 있는 Rigidbody의 속도
+    private Vector3 _velocityGravity = Vector3.zero; // 중력 속도
+    private Vector3 _velocityHover = Vector3.zero; // 호버링 속도
     private Vector3 _velocityLeaveGround = Vector3.zero; // 지면을 떠나는 속도
     private Vector3 _velocityInput = Vector3.zero; // 입력 속도
 
@@ -267,8 +282,59 @@ public class PlayerMover : MonoBehaviour
         // 현재 지면 위에 존재한다면
         if (IsOnGround)
         {
+            _velocityGroundRb = _groundRb == null ? Vector3.zero : _groundRb.linearVelocity; // 지면의 Rigidbody가 있다면 그 속도를 가져옴
 
+            // 입력이 있다면 이동 방향에 대한 기울기의 근사값을 구함
+            if(_velocityInput != Vector3.zero)
+            {
+                _slopeNormal = ApproximateSlope(in _groundInfo, out _slopePoint, 
+                    forward: _lastNonZeroDirection, range: _slopeApproxRange, iters: _slopeApproxIters, 
+                    debug: _debugSlopeApproximation);
+            }
+
+            // 호버 속도 업데이트
+            _velocityHover = UpdateStepHoverVelocity(GroundInfo.Distance, deltaTime);
+            _velocityGravity = Vector3.zero; // 중력 속도 초기화
         }
+        else
+        {
+            _slopeNormal = Vector3.up; // 입력이 없다면 경사 법선을 위쪽으로 설정
+            if (_enableGravity)
+            {
+                _velocityGravity += _gravityAccel * deltaTime; // 중력 가속도를 적용
+                _velocityGravity = Vector3.ClampMagnitude(_velocityGravity, _gravitySpeedMax); // 중력 속도를 최대 속도로 제한
+            }
+        }
+
+        // TODO: 적용할 속도를 조합
+    }
+
+    // 원하는 지면 거리를 유지하기 위해 필요한 조정 호버 속도를 계산합니다., 아래의 절차도 잘 이해가 안됌
+    private Vector3 UpdateStepHoverVelocity(float groundDistance, float deltaTime, float groundDistanceOffset = 0f, bool smoothing = true)
+    {
+        Vector3 vel = Vector3.zero;
+        float hoverHeightPatch = GroundDistanceDesired + groundDistanceOffset - groundDistance;
+        if (_isOnGroundChangedThisFrame || !smoothing)
+        {
+            vel = Vector3.up * (hoverHeightPatch / deltaTime);
+        }
+        else
+        {
+            if(_stepSmoothDelayCounter >= 0f)
+            {
+                return Vector3.zero; // 아직 스무딩 딜레이가 남아있다면 호버 속도는 0
+            }
+            float stepSmooth = _stepSmooth;
+            if (_velocityInput != Vector3.zero)
+            {
+                stepSmooth = stepSmooth * _stepSmoothMovingMultipler; // 움직이는 동안 스무딩을 더 부드럽게 하기 위한 멀티플라이어 적용
+            }
+            float directionSign = Mathf.Sign(hoverHeightPatch);
+            float hoverHeightDelta = Mathf.Abs(hoverHeightPatch) / (stepSmooth * deltaTime);
+            vel = Vector3.up * directionSign * hoverHeightDelta;
+        }
+
+        return vel;
     }
 
     private void UpdateCleanup()
@@ -326,6 +392,123 @@ public class PlayerMover : MonoBehaviour
 #endif
 
         return groundInfo;
+    }
+
+    // 전방과 후방의 지면의 경사에 대한 법선을 근사화하는 함수
+    private Vector3 ApproximateSlope(in GroundInfo groundInfo, out Vector3 slopePoint, Vector3 forward, float range, int iters = 1, bool debug = false)
+    {
+        // 초기화
+        Vector3 origin = GroundProbeOrigin;
+        Vector3 up = Vector3.up;
+        float maxGroundDistance = GroundDistanceThreshold + 1f;
+        float maxHeightDiff = _stepHeight;
+        Vector3 slopeNormal = groundInfo.Normal;
+        slopePoint = groundInfo.Point;
+        float rangeStep = range / (float)iters;
+
+        // 움직임 주체의 앞 방향에서 경사를 감지할 대표 위치를 구함
+        Vector3 frontGroundPoint = groundInfo.Point;
+        bool frontProxyHit = SampleFarthestGroundPoint(ref frontGroundPoint, maxGroundDistance, maxGroundDistance, forward, rangeStep, iters, debug);
+
+        // 움직임 주체의 뒷 방향에서 경사를 감지할 대표 위치를 구함
+        Vector3 backGroundPoint = groundInfo.Point;
+        bool backProxyHit = SampleFarthestGroundPoint(ref backGroundPoint, maxGroundDistance, maxGroundDistance, -forward, rangeStep, iters, debug);
+
+        // 2개의 대표 위치로부터 경사 법선을 계산
+        if(frontProxyHit || backProxyHit)
+        {
+            Vector3 slopeSegment = frontGroundPoint - backGroundPoint;
+            slopeNormal = Vector3.Cross(slopeSegment, Vector3.Cross(up, slopeSegment)).normalized;
+
+#if UNITY_EDITOR
+            if (debug)
+            {
+                Debug.DrawLine(frontGroundPoint, backGroundPoint, Color.yellow);
+            }
+#endif
+            // 둘 다 지면을 감지한 경우, 여기는 무슨 동작?
+            if(frontProxyHit && backProxyHit)
+            {
+                Vector3 groundProbeSegment = (maxGroundDistance + 100f) * -up;
+                bool hasIntersection = GetIntersection(origin, groundProbeSegment, backGroundPoint, slopeSegment, out slopePoint);
+            }
+        }
+
+        return slopeNormal;
+    }
+
+    /// <summary>
+    /// 기준점에서 특정 방향으로 가장 멀리 있는 지면 위치를 찾습니다.
+    /// <para>각 반복마다, 지정된 방향으로 일정 거리만큼 이동한 후
+    /// 해당 위치에서 아래 방향으로 지면을 탐색합니다.</para>
+    /// <para>지면 탐색에 성공하면 그 지점을 현재 위치로 갱신하고 계속 진행하며,
+    /// 탐색에 실패하면 바로 false를 반환합니다.</para>
+    /// </summary>
+    /// <param name="groundPoint"></param>
+    /// <param name="groundProbeDistance"></param>
+    /// <param name="maxHeightDiff"></param>
+    /// <param name="direction"></param>
+    /// <param name="step"></param>
+    /// <param name="iters"></param>
+    /// <param name="debug"></param>
+    /// <returns></returns>
+    private bool SampleFarthestGroundPoint(ref Vector3 groundPoint, float groundProbeDistance, float maxHeightDiff, Vector3 direction, float step, int iters, bool debug = false)
+    {
+        // 초기화
+        Vector3 origin = GroundProbeOrigin;
+        Vector3 up = Vector3.up;
+        Vector3 prevGroundPoint = groundPoint;
+        bool proxyHit = false;
+
+        for(int i = 1; i <= iters; i++)
+        {
+            Vector3 proxyOrigin = origin + (step * i * direction);
+            bool hit = Physics.Raycast(proxyOrigin, -up, out RaycastHit hitInfo,
+                maxDistance: groundProbeDistance, layerMask: _groundLayerMask);
+#if UNITY_EDITOR
+            if (debug)
+            {
+                Vector3 endHit = proxyOrigin + hitInfo.distance * -up;
+                Vector3 endTotal = proxyOrigin + groundProbeDistance * -up;
+                Debug.DrawLine(proxyOrigin, endHit, Color.green);
+                Debug.DrawLine(endHit, endTotal, Color.grey);
+            }
+#endif
+            if (hit)
+            {
+                float heightDiff = Vector3.Distance(hitInfo.point, prevGroundPoint);
+                proxyHit = true;
+                if (heightDiff > maxHeightDiff)
+                {
+                    return proxyHit;
+                }
+                groundPoint = hitInfo.point;
+                prevGroundPoint = hitInfo.point;
+            }
+            else return proxyHit;
+        }
+        return proxyHit;
+    }
+
+    // 이건 무슨 동작?
+    public static bool GetIntersection(Vector3 p1, Vector3 v1, Vector3 p2, Vector3 v2, out Vector3 intersection)
+    {
+        intersection = Vector3.zero;
+
+        Vector3 cross_v1v2 = Vector3.Cross(v1, v2);
+        float denominator = cross_v1v2.sqrMagnitude;
+
+        // 만약 분모가 거의 0이라면, 두 선은 평행하거나 일치합니다. - 이게 무슨 뜻?
+        if (denominator < Mathf.Epsilon)
+        {
+            return false;
+        }
+
+        Vector3 p2_p1 = p2 - p1;
+        float t = Vector3.Dot(Vector3.Cross(p2_p1, v2), cross_v1v2) / denominator;
+
+        intersection = p1 + t * v1;
+        return true;
     }
 
     #endregion
