@@ -280,7 +280,7 @@ public class PlayerMover : MonoBehaviour
     private void UpdateMovement(float deltaTime)
     {
         if (_stepSmoothDelayCounter > 0f) _stepSmoothDelayCounter -= deltaTime; // 계단 스무딩 딜레이가 있다면 그만큼 감소
-        if (_velocityGravity.magnitude > 0f) _lastNonZeroDirection = _velocityInput.normalized; // 입력이 있다면 크기가 0이 아닌 마지막 이동 방향 갱신
+        if (_velocityInput.magnitude > 0f) _lastNonZeroDirection = _velocityInput.normalized; // 입력이 있다면 크기가 0이 아닌 마지막 이동 방향 갱신
 
         // 현재 지면 위에 존재한다면
         if (IsOnGround)
@@ -596,7 +596,7 @@ public class PlayerMover : MonoBehaviour
         _rigidbody.useGravity = false;
         _rigidbody.freezeRotation = true;
         _rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-        _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
         TryGetComponent(out _collider);
     }

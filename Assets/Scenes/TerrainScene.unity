@@ -4233,9 +4233,41 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1755460181567462940, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_Height
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755460181567462940, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_Radius
+      value: 0.365
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755460181567462940, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_Center.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755460181567462940, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 13400000, guid: 07fe67cbb3aba094290560af332c8c64, type: 2}
+    - target: {fileID: 6984510043093418362, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984510043093418362, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _stepSmoothDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984510043093418362, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _debugGroundDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6984510043093418362, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _debugSlopeApproximation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8430295948443537931, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9207538171332864616, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 101.33

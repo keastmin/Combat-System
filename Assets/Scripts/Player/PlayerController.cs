@@ -181,7 +181,6 @@ public class PlayerController : MonoBehaviour
     // 움직임
     public void Move()
     {
-        // if (_inputC.MoveInput.sqrMagnitude > 0.1f) _lastInputDirection = _inputC.MoveInput; // 마지막 입력 방향 설정
         _mover.Move(transform.forward * _currentSpeed); // 이동
     }
 
