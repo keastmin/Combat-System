@@ -47,6 +47,8 @@ public class PlayerMover : MonoBehaviour
     [SerializeField][Min(1f)] private float _stepSmooth = 10f; // 계단 스무딩 정도
     [Tooltip("움직이는 동안 계단 스무딩 부드럽게 동작하기 위한 멀티플러")]
     [SerializeField][Min(0f)] private float _stepSmoothMovingMultipler = 1f; // 움직일 때의 스무딩 정도
+    [Tooltip("true라면 이동속도를 지면 경사에 맞춥니다")]
+    [SerializeField] private bool _alignVelocityToSlope = true; // 이동속도를 지면 경사에 맞추는지 여부
     [Tooltip("계단 스무딩을 위해 앞뒤로 기울기를 감지할 범위를 설정합니다.")]
     [SerializeField][Min(0f)] private float _slopeApproxRange = 1f;
     [SerializeField][Min(0)] private int _slopeApproxIters = 4; // 기울기 근사화 반복 횟수
@@ -196,6 +198,7 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         OnValidate();
+        _lastNonZeroDirection = _collider.transform.forward;
     }
 
     private void FixedUpdate()
@@ -306,7 +309,17 @@ public class PlayerMover : MonoBehaviour
             }
         }
 
-        // TODO: 적용할 속도를 조합
+        // 적용할 속도를 조합
+        Vector3 velocityGravity = IsLeavingGround || !_enableGravity ? Vector3.zero : _velocityGravity; // 지면으로부터 떠났거나 중력 사용을 안 한다면 중력은 0으로 설정
+        // 이거 무슨 동작?
+        float alignVelocityToPlaneFactor = _collisionIsTouchingWall ?
+            1f - Mathf.Abs(Vector3.Dot(Vector3.ProjectOnPlane(_velocityInput.normalized, Vector3.up), Vector3.ProjectOnPlane(_wallNormal, Vector3.up))) :
+            1f;
+        Vector3 velocityMove = _alignVelocityToSlope ? AlignVelocityToPlane(_velocityInput, _slopeNormal, alignVelocityToPlaneFactor) : _velocityInput;
+        Vector3 velocityToApply = _velocityGroundRb + velocityGravity + _velocityHover + velocityMove + _velocityLeaveGround;
+        _velocityLeaveGround = Vector3.MoveTowards(_velocityLeaveGround, Vector3.zero, _rigidbody.mass * deltaTime); // 지면을 떠나는 속도를 질량에 따라 점차 0으로 감소시킴
+
+        ApplyVelocity(velocityToApply); // 최종 속도 적용
     }
 
     // 원하는 지면 거리를 유지하기 위해 필요한 조정 호버 속도를 계산합니다., 아래의 절차도 잘 이해가 안됌
@@ -337,9 +350,20 @@ public class PlayerMover : MonoBehaviour
         return vel;
     }
 
+    private void ApplyVelocity(Vector3 velocity)
+    {
+        _rigidbody.linearVelocity = velocity;
+    }
+
     private void UpdateCleanup()
     {
-
+        _velocityHover = Vector3.zero;
+        _velocityInput = Vector3.zero;
+        _isOnGroundChangedThisFrame = false;
+        _hasDirectCollision = false;
+        _collisionGroundInfo.IsOnGround = false;
+        _collisionIsTouchingCeiling = false;
+        _collisionIsTouchingWall = false;
     }
 
     #endregion
@@ -530,6 +554,16 @@ public class PlayerMover : MonoBehaviour
     #endregion
 
     #region 헬퍼 함수
+
+    // 속도를 지면의 법선에 맞추는 함수
+    private Vector3 AlignVelocityToPlane(Vector3 velocity, Vector3 normal, float ratio = 1f)
+    {
+        float speed = velocity.magnitude;
+        Vector3 direction = velocity / speed;
+        Vector3 alignedDirection = Quaternion.FromToRotation(Vector3.up, normal) * direction;
+        alignedDirection = Vector3.Lerp(direction, alignedDirection, ratio); // 여기서 Lerp는 왜 사용하는가?
+        return speed * alignedDirection.normalized;
+    }
 
     private bool LayerMaskContains(LayerMask layerMask, int layer)
     {
