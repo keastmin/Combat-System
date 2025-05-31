@@ -76,7 +76,6 @@ public class PlayerMover : MonoBehaviour
 
     // 상태
     private GroundInfo _collisionGroundInfo = GroundInfo.Empty;
-    private bool _hasDirectCollision = false; 
     private bool _collisionIsTouchingCeiling = false;
     private bool _collisionIsTouchingWall = false;
     private Vector3 _wallNormal = Vector3.forward;
@@ -104,6 +103,9 @@ public class PlayerMover : MonoBehaviour
     #endregion
 
     #region 프로퍼티
+
+    // 중력 여부
+    public bool EnableGravity { get => _enableGravity; set => _enableGravity = value; }
 
     // 지면 감지 정보
     public GroundInfo GroundInfo
@@ -181,7 +183,6 @@ public class PlayerMover : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        _hasDirectCollision = true;
         // 이 부분은 무슨 동작?
         CheckDirectCollision(collision,
             out _collisionGroundInfo,
@@ -360,7 +361,6 @@ public class PlayerMover : MonoBehaviour
         _velocityHover = Vector3.zero;
         _velocityInput = Vector3.zero;
         _isOnGroundChangedThisFrame = false;
-        _hasDirectCollision = false;
         _collisionGroundInfo.IsOnGround = false;
         _collisionIsTouchingCeiling = false;
         _collisionIsTouchingWall = false;
@@ -542,6 +542,12 @@ public class PlayerMover : MonoBehaviour
     public void Move(Vector3 velocity)
     {
         _velocityInput = velocity;
+    }
+
+    public void LeaveGround()
+    {
+        if (_isTouchingCeiling) return;
+        _shouldLeaveGround = true;
     }
 
     public void EndLeaveGround()

@@ -307,9 +307,26 @@ MonoBehaviour:
   _height: 2
   _thickness: 0.73
   _offset: {x: 0, y: 0, z: 0}
-  _gravityAcc: 9.81
-  _maxGravitySpeed: 20
+  _enableGravity: 1
+  _gravityAccel: {x: 0, y: -9.81, z: 0}
+  _gravitySpeedMax: 20
+  _stepSmoothDelay: 0.1
   _stepHeight: 0.5
+  _stepSmooth: 10
+  _stepSmoothMovingMultipler: 1
+  _alignVelocityToSlope: 1
+  _slopeApproxRange: 1
+  _slopeApproxIters: 4
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  _groundProbeExtraDistance: 10
+  _groundProbeThickness: 0.1
+  _groundProbeFindRealNormal: 0
+  _debugGroundDetection: 1
+  _debugSlopeApproximation: 1
+  _rigidbody: {fileID: 8430295948443537931}
+  _collider: {fileID: 1755460181567462940}
 --- !u!114 &2277026678597687780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +340,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _doubleTabTime: 0.3
-  _turnInputTime: 0.1
 --- !u!95 &5080738939732429938
 Animator:
   serializedVersion: 7
@@ -383,7 +399,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722071625524053266}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 07fe67cbb3aba094290560af332c8c64, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -425,7 +441,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!1 &800227719521976718
 GameObject:
   m_ObjectHideFlags: 0

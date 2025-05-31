@@ -19,6 +19,7 @@ public class DodgeState : IState
         _controller.Rotate(false); // 회피 방향 설정
         _controller.SetTargetSpeed(_controller.DodgeSpeed); // 회피 속도 설정
         _controller.SetCurrentSpeed(_controller.DodgeSpeed); // 현재 속도 설정
+        _controller.EnableGravity(false); // 회피 중 중력 비활성화
     }
 
     public void Execute()
@@ -41,6 +42,7 @@ public class DodgeState : IState
     {
         _controller.IsTurn = false; // 회피 상태 종료 시 턴 상태는 해제
 
+        _controller.EnableGravity(true); // 회피 종료 시 중력 활성화
         _controller.Anim.SetBool("IsDodge", false);
     }
 
@@ -58,6 +60,10 @@ public class DodgeState : IState
             {
                 _controller.StateMachine.Transition(_controller.StateMachine.IdleState);
             }
+        }
+        else if (_controller.InputC.JumpInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.JumpState);
         }
     }
 }

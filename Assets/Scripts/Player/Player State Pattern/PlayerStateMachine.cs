@@ -7,6 +7,7 @@ public class PlayerStateMachine
     public JogState JogState; // 조깅 상태
     public RunState RunState; // 달리기 상태
     public TurnState TurnState; // 회전 상태
+    public JumpState JumpState; // 점프 상태
     public DodgeState DodgeState; // 회피 상태
 
     private IState _prevState; // 이전 상태 (필요시 사용 가능)

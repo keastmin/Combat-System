@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(InputController), typeof(Animator))]
@@ -80,11 +81,34 @@ public class PlayerController : MonoBehaviour
         InitStateMachine();
     }
 
+    private bool _leaveGround = false;
+
     private void Update()
     {
+        Debug.Log(_inputC.MoveInput);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ToggleLeaveGround();
+        }
+
         LerpCurrentSpeed(_targetSpeed, _currentSpeed, _speedLerpTime); // 속도 세팅
         TurnChecker(); // 턴 체크
         _stateMachine?.Execute();
+    }
+
+    private void ToggleLeaveGround()
+    {
+        _leaveGround = !_leaveGround;
+        Debug.Log("작동");
+
+        if (_leaveGround)
+        {
+            _mover.LeaveGround();
+        }
+        else
+        {
+            _mover.EndLeaveGround();
+        }
     }
 
     private void FixedUpdate()
@@ -221,6 +245,11 @@ public class PlayerController : MonoBehaviour
             if (isLerp) transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * lerpTime);
             else transform.rotation = targetRotation;
         }
+    }
+
+    public void EnableGravity(bool isEnable = true)
+    {
+        _mover.EnableGravity = isEnable;
     }
 
     #endregion
