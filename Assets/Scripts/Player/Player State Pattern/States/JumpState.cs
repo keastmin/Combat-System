@@ -11,12 +11,14 @@ public class JumpState : IState
 
     public void Enter()
     {
-        Debug.Log("점프 상태 진입");
+        _controller.Anim.SetTrigger("IsJump");
+
+        _controller.Jump(new Vector3(0, _controller.JumpSpeed, 0));
     }
 
     public void Execute()
     {
-        
+        Transition();
     }
 
     public void FixedExecute()
@@ -26,11 +28,20 @@ public class JumpState : IState
 
     public void AnimatorMove()
     {
-        
+
     }
 
     public void Exit()
     {
         
+    }
+
+    private void Transition()
+    {
+        AnimatorStateInfo stateInfo = _controller.Anim.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Jump Start") && stateInfo.normalizedTime >= 1.0f)
+        {
+
+        }
     }
 }

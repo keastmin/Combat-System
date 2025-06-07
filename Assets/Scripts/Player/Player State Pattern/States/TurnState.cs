@@ -55,5 +55,9 @@ public class TurnState : IState
                 _hasTransitioned = true;
             }
         }
+        else if (_controller.InputC.DodgeInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
+        }
     }
 }
