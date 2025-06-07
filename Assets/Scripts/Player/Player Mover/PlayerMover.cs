@@ -34,6 +34,7 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private Vector3 _offset = Vector3.zero; // 콜라이더 오프셋
 
     [Header("물리")]
+    [SerializeField] private float _mass = 1f; // 질량
     [SerializeField] private bool _enableGravity = true; // 중력 활성화 여부
     [SerializeField] private Vector3 _gravityAccel = Vector3.down * 9.81f; // 중력 가속도
     [SerializeField] private float _gravitySpeedMax = 20f; // 최대 중력 속도
@@ -61,6 +62,9 @@ public class PlayerMover : MonoBehaviour
     [Tooltip("true라면 지면 검사의 두께가 0보다 클 때, 실제 지면 법선을 찾기 위해 2차 검사 Ray를 쏩니다.")]
     [SerializeField] private bool _groundProbeFindRealNormal = false;
 
+    [Header("점프")]
+    [SerializeField] private float _jumpToStopHoverTime = 0.8f; // 점프 후 호버링을 잠시 멈추는 시간
+
     [Header("디버그")]
     [Tooltip("지면 감지를 위한 디버그 기즈모를 표시합니다.")]
     [SerializeField] private bool _debugGroundDetection = false; // 지면 검사 디버그
@@ -82,7 +86,6 @@ public class PlayerMover : MonoBehaviour
     private GroundInfo _groundInfo = GroundInfo.Empty;
     private bool _isOnGround;
     private bool _isOnGroundChangedThisFrame;
-    private bool _shouldLeaveGround = false; // 지면을 떠나야 하는지 여부
     private bool _isTouchingCeiling = false; // 천장에 닿았는지 여부
     private Collider _groundCollider = null; // 지면의 콜라이더
     private Rigidbody _groundRb = null; // 지면의 Rigidbody
@@ -97,8 +100,8 @@ public class PlayerMover : MonoBehaviour
     private Vector3 _velocityGroundRb = Vector3.zero; // 지면에 있는 Rigidbody의 속도
     private Vector3 _velocityGravity = Vector3.zero; // 중력 속도
     private Vector3 _velocityHover = Vector3.zero; // 호버링 속도
-    private Vector3 _velocityLeaveGround = Vector3.zero; // 지면을 떠나는 속도
     private Vector3 _velocityInput = Vector3.zero; // 입력 속도
+    private Vector3 _velocityJump = Vector3.zero; // 점프 속도
 
     #endregion
 
@@ -150,8 +153,6 @@ public class PlayerMover : MonoBehaviour
         get => _groundCollider;
         private set => _groundCollider = value;
     }
-    // true라면, 감지된 지면을 무시하고 자신이 지면에 있지 않은 것처럼 강제함
-    private bool IsLeavingGround => _shouldLeaveGround || _velocityLeaveGround != Vector3.zero;
     // 캡슐 콜라이더의 절반 높이
     private float ColliderHalfHeight => _collider.height / 2f;
     // 캡슐 콜라이더의 센터
@@ -166,8 +167,10 @@ public class PlayerMover : MonoBehaviour
             return value * 1.01f;
         }
     }
+    
     // 캡슐 콜라이더의 중심으로부터 원하는 지면까지의 거리
     private float GroundDistanceDesired => ColliderHalfHeight + _stepHeight;
+
     #endregion
 
     #region 이벤트
@@ -213,8 +216,7 @@ public class PlayerMover : MonoBehaviour
 
     #region 코어
 
-    // 참조가 1개라면 bool로 선언한 이유가?
-    private bool CheckDirectCollision(Collision collision, out GroundInfo groundInfo, out bool isTouchingCeiling, out bool isTouchingWall)
+    private void CheckDirectCollision(Collision collision, out GroundInfo groundInfo, out bool isTouchingCeiling, out bool isTouchingWall)
     {
         groundInfo = new GroundInfo();
         groundInfo.IsOnGround = false;
@@ -223,7 +225,7 @@ public class PlayerMover : MonoBehaviour
         // 이거 무슨 동작?
         if(!LayerMaskContains(_groundLayerMask, collision.gameObject.layer))
         {
-            return false;
+            return;
         }
 
         // ContactPoint는 무엇인가?
@@ -246,8 +248,6 @@ public class PlayerMover : MonoBehaviour
             isTouchingWall = true;
             _wallNormal = contact.normal;
         }
-
-        return true;
     }
 
     // 콜리젼 업데이트
@@ -260,14 +260,6 @@ public class PlayerMover : MonoBehaviour
         if(Mathf.Abs(newGroundInfo.Distance - GroundInfo.Distance) > 0.1f * (_stepHeight * 2f))
         {
             _stepSmoothDelayCounter = _stepSmoothDelay;
-        }
-
-        // 지면을 떠났을 때
-        if (IsLeavingGround)
-        {
-            // 천장에 닿으면 지면을 떠나는 것을 중지
-            if (_isTouchingCeiling) EndLeaveGround();
-            else newGroundInfo.IsOnGround = false;
         }
 
         // 지면 정보 업데이트
@@ -296,14 +288,15 @@ public class PlayerMover : MonoBehaviour
                     debug: _debugSlopeApproximation);
             }
 
-            // 호버 속도 업데이트
-            _velocityHover = UpdateStepHoverVelocity(GroundInfo.Distance, deltaTime);
+            // 호버 속도 업데이트           
+            if (IsTouchingCeiling) _velocityHover = UpdateStepHoverVelocity(GroundInfo.Distance, deltaTime, false);
+            else _velocityHover = UpdateStepHoverVelocity(GroundInfo.Distance, deltaTime);
             _velocityGravity = Vector3.zero; // 중력 속도 초기화
         }
         else
         {
             _slopeNormal = Vector3.up; // 입력이 없다면 경사 법선을 위쪽으로 설정
-            if (_enableGravity)
+            if (_enableGravity || (_velocityJump.sqrMagnitude > 0f))
             {
                 _velocityGravity += _gravityAccel * deltaTime; // 중력 가속도를 적용
                 _velocityGravity = Vector3.ClampMagnitude(_velocityGravity, _gravitySpeedMax); // 중력 속도를 최대 속도로 제한
@@ -311,23 +304,28 @@ public class PlayerMover : MonoBehaviour
         }
 
         // 적용할 속도를 조합
-        Vector3 velocityGravity = IsLeavingGround || !_enableGravity ? Vector3.zero : _velocityGravity; // 지면으로부터 떠났거나 중력 사용을 안 한다면 중력은 0으로 설정
+        Vector3 velocityGravity = _enableGravity || (_velocityJump.sqrMagnitude > 0f) ? _velocityGravity : Vector3.zero; // 중력 사용을 안 한다면 중력은 0으로 설정
         // 이거 무슨 동작?
         float alignVelocityToPlaneFactor = _collisionIsTouchingWall ?
             1f - Mathf.Abs(Vector3.Dot(Vector3.ProjectOnPlane(_velocityInput.normalized, Vector3.up), Vector3.ProjectOnPlane(_wallNormal, Vector3.up))) :
             1f;
         Vector3 velocityMove = _alignVelocityToSlope ? AlignVelocityToPlane(_velocityInput, _slopeNormal, alignVelocityToPlaneFactor) : _velocityInput;
-        Vector3 velocityToApply = _velocityGroundRb + velocityGravity + _velocityHover + velocityMove + _velocityLeaveGround;
-        _velocityLeaveGround = Vector3.MoveTowards(_velocityLeaveGround, Vector3.zero, _rigidbody.mass * deltaTime); // 지면을 떠나는 속도를 질량에 따라 점차 0으로 감소시킴
+        Vector3 velocityToApply = _velocityGroundRb + velocityGravity + _velocityHover + velocityMove + _velocityJump;
+
+        // 점프 속도 조절
+        if(_velocityJump.sqrMagnitude > 0f)
+        {
+            _velocityJump = Vector3.MoveTowards(_velocityJump, Vector3.zero, _mass * deltaTime);
+        }
 
         ApplyVelocity(velocityToApply); // 최종 속도 적용
     }
 
     // 원하는 지면 거리를 유지하기 위해 필요한 조정 호버 속도를 계산합니다., 아래의 절차도 잘 이해가 안됌
-    private Vector3 UpdateStepHoverVelocity(float groundDistance, float deltaTime, float groundDistanceOffset = 0f, bool smoothing = true)
+    private Vector3 UpdateStepHoverVelocity(float groundDistance, float deltaTime, bool smoothing = true)
     {
         Vector3 vel = Vector3.zero;
-        float hoverHeightPatch = GroundDistanceDesired + groundDistanceOffset - groundDistance;
+        float hoverHeightPatch = GroundDistanceDesired - groundDistance;
         if (_isOnGroundChangedThisFrame || !smoothing)
         {
             vel = Vector3.up * (hoverHeightPatch / deltaTime);
@@ -361,7 +359,6 @@ public class PlayerMover : MonoBehaviour
         _velocityHover = Vector3.zero;
         _velocityInput = Vector3.zero;
         _isOnGroundChangedThisFrame = false;
-        _collisionGroundInfo.IsOnGround = false;
         _collisionIsTouchingCeiling = false;
         _collisionIsTouchingWall = false;
     }
@@ -544,17 +541,11 @@ public class PlayerMover : MonoBehaviour
         _velocityInput = velocity;
     }
 
-    public void LeaveGround()
+    public void Jump(Vector3 velocity)
     {
-        if (_isTouchingCeiling) return;
-        _shouldLeaveGround = true;
-    }
-
-    public void EndLeaveGround()
-    {
-        _shouldLeaveGround = false;
-        _isOnGroundChangedThisFrame = true;
         _velocityGravity = Vector3.zero;
+        _stepSmoothDelayCounter = _jumpToStopHoverTime;
+        _velocityJump = velocity;
     }
 
     #endregion
@@ -611,6 +602,7 @@ public class PlayerMover : MonoBehaviour
     {
         SetColliderHeight();
         SetColliderRadius();
+        SetMass();
     }
 
     private void SetColliderHeight()
@@ -633,6 +625,11 @@ public class PlayerMover : MonoBehaviour
     private void LimitColliderValue()
     {
         if (_collider.height < _collider.radius * 2f) _collider.radius = _collider.height / 2f;
+    }
+
+    private void SetMass()
+    {
+        _rigidbody.mass = _mass;
     }
 
     #endregion
