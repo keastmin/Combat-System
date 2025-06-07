@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Animations/Player/Movement/Jump/Jump_Start_ZeroHeight.anim.meta
 guid: 36b6935a005f8604dadeb12ac51ffb5d
 NativeFormatImporter:
+========
+guid: 21fa116ee7edf8440899fc4a5081c79a
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> 2a933bf38b0996f9640476aca20aa418ba29fd4c:Assets/Resources/IdaFaber/Materials.meta
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
