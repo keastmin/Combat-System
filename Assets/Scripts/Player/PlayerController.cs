@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public float FastRunSpeed => _fastRunSpeed; // 빠른 달리기 속도
     public float FastRunStartTime => _fastRunStartTime; // 빠른 달리기 시작 시간
     public float TurnSpeed => _turnSpeed; // 턴 속도
+    public float JumpSpeed => _jumpSpeed; // 점프 속도
     public float DodgeSpeed => _dodgeSpeed; // 회피 속도
     public float DodgeTime => _dodgeTime; // 회피 시간
     public float RotationSpeed => _rotationSpeed; // 회전 속도
@@ -81,34 +82,11 @@ public class PlayerController : MonoBehaviour
         InitStateMachine();
     }
 
-    private bool _leaveGround = false;
-
     private void Update()
     {
-        Debug.Log(_inputC.MoveInput);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ToggleLeaveGround();
-        }
-
         LerpCurrentSpeed(_targetSpeed, _currentSpeed, _speedLerpTime); // 속도 세팅
         TurnChecker(); // 턴 체크
         _stateMachine?.Execute();
-    }
-
-    private void ToggleLeaveGround()
-    {
-        _leaveGround = !_leaveGround;
-        Debug.Log("작동");
-
-        if (_leaveGround)
-        {
-            _mover.LeaveGround();
-        }
-        else
-        {
-            _mover.EndLeaveGround();
-        }
     }
 
     private void FixedUpdate()
@@ -252,6 +230,11 @@ public class PlayerController : MonoBehaviour
         _mover.EnableGravity = isEnable;
     }
 
+    public void Jump(Vector3 velocity)
+    {
+        _mover.Jump(velocity);
+    }
+
     #endregion
 
     #endregion
@@ -282,7 +265,6 @@ public class PlayerController : MonoBehaviour
     private void InitComponent()
     {
         TryGetComponent(out _anim);
-        _anim.applyRootMotion = false;
 
         TryGetComponent(out _inputC);
 
