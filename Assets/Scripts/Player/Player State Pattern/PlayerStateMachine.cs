@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerStateMachine
@@ -8,6 +9,7 @@ public class PlayerStateMachine
     public RunState RunState; // 달리기 상태
     public TurnState TurnState; // 회전 상태
     public JumpState JumpState; // 점프 상태
+    public FallState FallState; // 낙하 상태
     public DodgeState DodgeState; // 회피 상태
 
     private IState _prevState; // 이전 상태 (필요시 사용 가능)
@@ -24,6 +26,7 @@ public class PlayerStateMachine
         RunState = new RunState(playerController);
         TurnState = new TurnState(playerController);
         JumpState = new JumpState(playerController);
+        FallState = new FallState(playerController);
         DodgeState = new DodgeState(playerController);
     }
 

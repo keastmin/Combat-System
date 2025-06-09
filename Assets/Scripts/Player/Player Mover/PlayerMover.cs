@@ -296,7 +296,7 @@ public class PlayerMover : MonoBehaviour
         else
         {
             _slopeNormal = Vector3.up; // 입력이 없다면 경사 법선을 위쪽으로 설정
-            if (_enableGravity || (_velocityJump.sqrMagnitude > 0f))
+            if (_enableGravity && (_velocityJump.sqrMagnitude < 0.1f))
             {
                 _velocityGravity += _gravityAccel * deltaTime; // 중력 가속도를 적용
                 _velocityGravity = Vector3.ClampMagnitude(_velocityGravity, _gravitySpeedMax); // 중력 속도를 최대 속도로 제한
@@ -304,7 +304,7 @@ public class PlayerMover : MonoBehaviour
         }
 
         // 적용할 속도를 조합
-        Vector3 velocityGravity = _enableGravity || (_velocityJump.sqrMagnitude > 0f) ? _velocityGravity : Vector3.zero; // 중력 사용을 안 한다면 중력은 0으로 설정
+        Vector3 velocityGravity = _enableGravity && (_velocityJump.sqrMagnitude < 0.1f) ? _velocityGravity : Vector3.zero; // 중력 사용을 안 한다면 중력은 0으로 설정
         // 이거 무슨 동작?
         float alignVelocityToPlaneFactor = _collisionIsTouchingWall ?
             1f - Mathf.Abs(Vector3.Dot(Vector3.ProjectOnPlane(_velocityInput.normalized, Vector3.up), Vector3.ProjectOnPlane(_wallNormal, Vector3.up))) :
