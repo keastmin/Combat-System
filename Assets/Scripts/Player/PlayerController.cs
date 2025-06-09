@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
     {
         InitComponent();
         InitCamera();
+        Cursor.lockState = CursorLockMode.Locked; // 커서 잠금
+        Cursor.visible = false; // 커서 비활성화
     }
 
     private void Start()

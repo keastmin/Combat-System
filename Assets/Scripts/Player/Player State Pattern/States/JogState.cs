@@ -52,6 +52,10 @@ public class JogState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.JumpState);
         }
+        else if (!_controller.Mover.IsOnGround)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.FallState);
+        }
         else if (_controller.InputC.MoveInput.sqrMagnitude < 0.1f)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.IdleState);

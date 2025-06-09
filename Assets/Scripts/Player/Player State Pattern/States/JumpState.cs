@@ -18,12 +18,29 @@ public class JumpState : IState
 
     public void Execute()
     {
+        if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f && _controller.CurrentSpeed >= _controller.RunSpeed - 1.0f)
+        {
+            _controller.SetTargetSpeed(_controller.RunSpeed);
+        }
+        else if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f && _controller.CurrentSpeed >= _controller.JogSpeed - 1.0f)
+        {
+            _controller.SetTargetSpeed(_controller.JogSpeed);
+        }
+        else if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
+        {
+            _controller.SetTargetSpeed(_controller.WalkSpeed);
+        }
+        else if (_controller.InputC.MoveInput.sqrMagnitude < 0.1f)
+        {
+            _controller.SetTargetSpeed(0f);
+        }
         Transition();
     }
 
     public void FixedExecute()
     {
-        
+        _controller.Move();
+        _controller.Rotate(true, _controller.RotationSpeed);
     }
 
     public void AnimatorMove()
@@ -41,7 +58,7 @@ public class JumpState : IState
         AnimatorStateInfo stateInfo = _controller.Anim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("Jump Start") && stateInfo.normalizedTime >= 1.0f)
         {
-
+            _controller.StateMachine.Transition(_controller.StateMachine.FallState);
         }
     }
 }
