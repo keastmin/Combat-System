@@ -11,6 +11,7 @@ public class PlayerStateMachine
     public JumpState JumpState; // 점프 상태
     public FallState FallState; // 낙하 상태
     public DodgeState DodgeState; // 회피 상태
+    public AttackState AttackState; // 공격 상태
 
     private IState _prevState; // 이전 상태 (필요시 사용 가능)
     private IState _currState;
@@ -28,6 +29,7 @@ public class PlayerStateMachine
         JumpState = new JumpState(playerController);
         FallState = new FallState(playerController);
         DodgeState = new DodgeState(playerController);
+        AttackState = new AttackState(playerController);
     }
 
     // 상태 초기화

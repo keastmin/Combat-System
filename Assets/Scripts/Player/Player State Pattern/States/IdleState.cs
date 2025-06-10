@@ -44,6 +44,10 @@ public class IdleState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
         }
+        else if (_controller.InputC.BasicAttackInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.AttackState);
+        }
         else if (_controller.IsTurn)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.TurnState);

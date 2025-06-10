@@ -20,17 +20,20 @@ public class InputController : MonoBehaviour
     private bool _walkInput = false; // Left Ctrl
     private bool _jumpInput = false; // Space
     private bool _dodgeInput = false; // WASD Double Tab
+    private bool _basicAttackInput = false; // Left Mouse Button
 
     // 프로퍼티
     public Vector3 MoveInput => new Vector3(_moveInput.x, 0f, _moveInput.y);
     public bool WalkInput => _walkInput;
     public bool JumpInput => _jumpInput;
     public bool DodgeInput => _dodgeInput;
+    public bool BasicAttackInput => _basicAttackInput;
 
     InputAction _moveAction;
     InputAction _walkAction;
     InputAction _jumpAction;
     InputAction _dodgeAction;
+    InputAction _basicAttackAction;
 
     private void Awake()
     {
@@ -39,6 +42,7 @@ public class InputController : MonoBehaviour
         _walkAction = _input.actions.FindAction("Walk");
         _jumpAction = _input.actions.FindAction("Jump");
         _dodgeAction = _input.actions.FindAction("Dodge");
+        _basicAttackAction = _input.actions.FindAction("Basic Attack");
     }
 
     void Update()
@@ -47,6 +51,7 @@ public class InputController : MonoBehaviour
         WalkInputDetect();
         JumpInputDetect();
         DodgeInputDetect();
+        BasicAttackInputDetect();
     }
 
     private void MoveInputDetect()
@@ -133,6 +138,14 @@ public class InputController : MonoBehaviour
                     _lastInput[i] = false; // 입력 상태 초기화
                 }
             }
+        }
+    }
+
+    private void BasicAttackInputDetect()
+    {
+        if (_basicAttackAction != null) 
+        {
+            _basicAttackInput = _basicAttackAction.triggered;
         }
     }
 }
