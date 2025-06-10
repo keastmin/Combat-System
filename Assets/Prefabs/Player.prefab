@@ -428,7 +428,7 @@ MonoBehaviour:
   _height: 1.8
   _thickness: 0.73
   _offset: {x: 0, y: 0, z: 0}
-  _mass: 1
+  _mass: 8
   _enableGravity: 1
   _gravityAccel: {x: 0, y: -9.81, z: 0}
   _gravitySpeedMax: 20
@@ -546,7 +546,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722071625524053266}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 8
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Basic Attack",
+                    "type": "Button",
+                    "id": "c45ad67f-85b1-4eb0-b2ca-382c065c9c21",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -181,6 +190,17 @@
                     "processors": "",
                     "groups": ";PC",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef57f4c4-693b-4796-9b1a-784a262145e8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "Basic Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
