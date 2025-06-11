@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(InputController), typeof(Animator))]
@@ -49,8 +50,10 @@ public class PlayerController : MonoBehaviour
     private float _runEndTime = 0f; // 달리기가 끝나고 지난 시간
     private bool _canTurn = false; // 턴 가능 여부
     private bool _isTurn = false; // 턴 트리거
+    private float _attackStartToDelay = 0f; // 공격 시작 시간
     public bool CanTurn { get => _canTurn; set => _canTurn = value; } // 달리기 종료 후 턴 가능 여부 프로퍼티
     public bool IsTurn { get => _isTurn; set => _isTurn = value; } // 턴 트리거 프로퍼티
+    public float AttackStartToDelay { get => _attackStartToDelay; set => _attackStartToDelay = value; } // 공격 시작 후 지난 시간
 
     // 카메라
     private Camera _mainCamera;
@@ -239,7 +242,38 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region 공격
+
+    public void DetectAimingEnemy()
+    {
+
+    }
+
+    public void RotateToEnemy()
+    {
+
+    }
+
+    public void MoveToEnemy()
+    {
+
+    }
+
     #endregion
+
+    #endregion
+
+
+    #region Animation Event
+
+    // 공격 시작하고 지난 시간 초기화
+    public void OnSetAttackStartTime()
+    {
+        AttackStartToDelay = 0f;
+    }
+
+    #endregion
+
 
     #region 초기화
 

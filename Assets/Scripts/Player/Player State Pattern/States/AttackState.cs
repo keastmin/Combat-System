@@ -16,6 +16,13 @@ public class AttackState : IState
 
     public void Execute()
     {
+        _controller.AttackStartToDelay += Time.deltaTime;
+        if (_controller.InputC.BasicAttackInput)
+        {
+            _controller.Anim.SetTrigger("IsBasicAttack");
+            _controller.Anim.SetFloat("IsBasicAttackTiming", _controller.AttackStartToDelay);
+        }
+
         TransitionTo();
     }
 
@@ -37,6 +44,7 @@ public class AttackState : IState
 
     public void Exit()
     {
+        _controller.OnSetAttackStartTime();
         _controller.Anim.SetBool("IsAttacking", false);
     }
 
