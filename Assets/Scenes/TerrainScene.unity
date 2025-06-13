@@ -588,7 +588,7 @@ Transform:
   m_GameObject: {fileID: 502916774}
   serializedVersion: 2
   m_LocalRotation: {x: 0.078028955, y: -0.000000028811106, z: 0.000000002254976, w: 0.9969511}
-  m_LocalPosition: {x: 101.33, y: 2.2499964, z: 84.96}
+  m_LocalPosition: {x: 101.33, y: 2.2499964, z: 84.776}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4154,11 +4154,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2029635162}
+  - component: {fileID: 2029635164}
   - component: {fileID: 2029635161}
   - component: {fileID: 2029635160}
   - component: {fileID: 2029635159}
+  - component: {fileID: 2029635163}
   m_Layer: 7
-  m_Name: Capsule
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4255,6 +4257,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &2029635163
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029635158}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 2
+--- !u!114 &2029635164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029635158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e90990bc1de61e439bbce5521bea4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _proactive: 0
+  _aggressive: 0
+  _inCombat: 0
 --- !u!1001 &37529738061879647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4267,6 +4311,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3492231454175429793, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _debug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492231454175429793, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _hardTargetingRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492231454175429793, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _debugHardTargetZone
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492231454175429793, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _targetLayerMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080738939732429938, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9207538171332864616, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 101.33
@@ -4277,7 +4341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9207538171332864616, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 88.96
+      value: 88.776
       objectReference: {fileID: 0}
     - target: {fileID: 9207538171332864616, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4338,7 +4402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6318205635331364662, guid: 8c57b607e5ca8774ca113282c6353c71, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 84.96
+      value: 84.776
       objectReference: {fileID: 0}
     - target: {fileID: 6318205635331364662, guid: 8c57b607e5ca8774ca113282c6353c71, type: 3}
       propertyPath: m_LocalRotation.w

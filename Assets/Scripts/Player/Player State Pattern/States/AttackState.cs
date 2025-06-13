@@ -4,6 +4,8 @@ public class AttackState : IState
 {
     private PlayerController _controller;
 
+    private Vector3 _target;
+
     public AttackState(PlayerController controller)
     {
         _controller = controller;
@@ -12,6 +14,11 @@ public class AttackState : IState
     public void Enter()
     {
         _controller.Anim.SetBool("IsAttacking", true);
+
+        _controller.SetTargetSpeed(0f);
+        _controller.SetCurrentSpeed(0f);
+
+        _target = _controller.transform.forward * 0.7f;
     }
 
     public void Execute()
@@ -37,8 +44,16 @@ public class AttackState : IState
 
         if (stateInfo.IsTag("Attack"))
         {
-            Vector3 deltaMove = _controller.Anim.deltaPosition / Time.fixedDeltaTime;
-            _controller.Move(deltaMove);
+            Vector3 vel = Vector3.zero;
+            if(_controller.AttackStartToDelay <= 0.1f)
+            {
+                vel = _target / 0.1f;
+            }
+            
+            Vector3 deltaMove = _controller.Anim.deltaPosition / Time.deltaTime;
+
+            // 최종 이동 적용
+            _controller.Move(deltaMove + vel);
         }
     }
 
