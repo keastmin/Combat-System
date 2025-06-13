@@ -18,17 +18,13 @@ public class JumpState : IState
 
     public void Execute()
     {
-        if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f && _controller.CurrentSpeed >= _controller.RunSpeed - 1.0f)
+        if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f && _controller.CurrentSpeed > _controller.JogSpeed + 0.1f)
         {
             _controller.SetTargetSpeed(_controller.RunSpeed);
         }
-        else if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f && _controller.CurrentSpeed >= _controller.JogSpeed - 1.0f)
-        {
-            _controller.SetTargetSpeed(_controller.JogSpeed);
-        }
         else if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
         {
-            _controller.SetTargetSpeed(_controller.WalkSpeed);
+            _controller.SetTargetSpeed(_controller.JogSpeed);
         }
         else if (_controller.InputC.MoveInput.sqrMagnitude < 0.1f)
         {

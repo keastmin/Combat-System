@@ -59,5 +59,9 @@ public class TurnState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
         }
+        else if (_controller.InputC.BasicAttackInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.AttackState);
+        }
     }
 }

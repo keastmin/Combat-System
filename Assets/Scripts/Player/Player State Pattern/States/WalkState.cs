@@ -47,6 +47,10 @@ public class WalkState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.FallState);
         }
+        else if (_controller.InputC.BasicAttackInput) 
+        {
+             _controller.StateMachine.Transition(_controller.StateMachine.AttackState);
+        }
         else if (_controller.InputC.MoveInput.sqrMagnitude <= 0.1f)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.IdleState);
