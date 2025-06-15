@@ -21,6 +21,7 @@ public class TargetDetector : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool _debugHardTargetZone = false;
 
+    public float MaxTargetingDistance => _hardTargetingRange;
 
     private NearestEnemyInfo _neareastEnemy = NearestEnemyInfo.Empty;
     public NearestEnemyInfo NearestEnemy => _neareastEnemy;
@@ -42,22 +43,14 @@ public class TargetDetector : MonoBehaviour
     {
         NearestEnemyInfo newNearestEnemy = NearestEnemyInfo.Empty;
         bool hardTargeting = false;
-        bool softTargeting = false;
 
-        hardTargeting = HardTargeting(out newNearestEnemy);
+        hardTargeting = NearTargeting(out newNearestEnemy);
 
-        if (hardTargeting)
-        {
-            _neareastEnemy = newNearestEnemy;
-            return;
-        }
-
-        softTargeting = SoftTargeting(out newNearestEnemy);
         _neareastEnemy = newNearestEnemy;
     }
 
     // 플레이어를 기준으로 360도 회전하는 전체 방향에서 적대적이거나 이미 전투 중인 적 중 가장 가까운 적을 찾습니다.
-    private bool HardTargeting(out NearestEnemyInfo nearestEnemy)
+    private bool NearTargeting(out NearestEnemyInfo nearestEnemy)
     {
         nearestEnemy = NearestEnemyInfo.Empty;
 
@@ -94,12 +87,16 @@ public class TargetDetector : MonoBehaviour
         return false;
     }
 
-    // 현재 보여지는 화면 기준으로 전방 일정 각도 내에서 가장 가까운 적을 찾습니다.
-    private bool SoftTargeting(out NearestEnemyInfo nearestEnemy)
+    // 공격을 이어가고자 하는 락온, 하나의 공격 사이클이 끝나면 자동 해제
+    private void AttackLockOn()
     {
-        nearestEnemy = NearestEnemyInfo.Empty;
 
-        return new();
+    }
+
+    // 사용자가 직접 락온 하여 거리가 멀어지지 않는 한 취소되지 않는 락온
+    private void ToggleLockOn()
+    {
+
     }
 
     private void OnDrawGizmos()
