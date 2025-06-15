@@ -20,17 +20,10 @@ public class AttackState : IState
         _controller.SetTargetSpeed(0f);
         _controller.SetCurrentSpeed(0f);
 
-        Debug.Log(_controller.NearestEnemy.InRange);
-
         if (_controller.NearestEnemy.InRange)
-        {
             _target = _controller.NearestEnemy.Point - _controller.transform.position;
-            _controller.transform.rotation = Quaternion.LookRotation(_target);
-        }
         else
-        {
             _target = _controller.transform.forward * 1.3f;
-        }
     }
 
     public void Execute()
@@ -47,25 +40,22 @@ public class AttackState : IState
 
     public void FixedExecute()
     {
-        //if (stateInfo.IsTag("Attack"))
-        //{
-            Vector3 vel = Vector3.zero;
-            if (_controller.AttackStartToDelay <= 0.1f)
-            {
-                vel = _target / 0.1f;
-            }
+        Vector3 vel = Vector3.zero;
+        if (_controller.AttackStartToDelay <= 0.1f)
+        {
+            vel = _target / 0.1f;
+            if (_controller.NearestEnemy.InRange)
+                _controller.SetRotation(_target, true, 20f);
+        }
 
-            Vector3 deltaMove = _controller.Anim.deltaPosition / Time.fixedDeltaTime;
+        Vector3 deltaMove = _controller.Anim.deltaPosition / Time.fixedDeltaTime;
 
-            // 최종 이동 적용
-            _controller.Move(vel);
-        //}
+        // 최종 이동 적용
+        _controller.Move(vel);
     }
 
     public void AnimatorMove()
     {
-        AnimatorStateInfo stateInfo = _controller.Anim.GetCurrentAnimatorStateInfo(0);
-
 
     }
 
