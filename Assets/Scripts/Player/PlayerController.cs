@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviour
     // 카메라
     private Camera _mainCamera;
 
+    // 타겟
+    private TargetDetector _targetDetector;
+    public NearestEnemyInfo NearestEnemy => _targetDetector.NearestEnemy;
+
     // 상태 머신
     private PlayerStateMachine _stateMachine;
     public PlayerStateMachine StateMachine => _stateMachine;
@@ -305,6 +309,8 @@ public class PlayerController : MonoBehaviour
         TryGetComponent(out _inputC);
 
         TryGetComponent(out _mover);
+
+        TryGetComponent(out _targetDetector);
     }
 
     // 상태머신 초기화
