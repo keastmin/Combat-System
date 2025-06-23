@@ -77,7 +77,10 @@ public class PlayerController : MonoBehaviour
     // 플레이어 무버
     private PlayerMover _mover;
     public PlayerMover Mover => _mover;
-    
+
+    // 플레이어 공격 데이터 컨테이너
+    private PlayerAttackDataContainer _attackDataContainer;
+
     private void Awake()
     {
         InitComponent();
@@ -311,12 +314,14 @@ public class PlayerController : MonoBehaviour
         TryGetComponent(out _mover);
 
         TryGetComponent(out _targetDetector);
+
+        TryGetComponent(out _attackDataContainer);
     }
 
     // 상태머신 초기화
     private void InitStateMachine()
     {
-        _stateMachine = new PlayerStateMachine(this);
+        _stateMachine = new PlayerStateMachine(this, _attackDataContainer);
         _stateMachine.Init(_stateMachine.IdleState); // 기본 상태를 Idle로 설정
     }
 
