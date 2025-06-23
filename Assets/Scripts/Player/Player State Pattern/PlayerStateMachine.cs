@@ -19,7 +19,7 @@ public class PlayerStateMachine
     public IState CurrState => _currState; // 현재 상태
 
     // 생성자를 통해 각 상태 초기화
-    public PlayerStateMachine(PlayerController playerController)
+    public PlayerStateMachine(PlayerController playerController, PlayerAttackDataContainer attackDataContainer)
     {
         IdleState = new IdleState(playerController);
         WalkState = new WalkState(playerController);
@@ -29,7 +29,7 @@ public class PlayerStateMachine
         JumpState = new JumpState(playerController);
         FallState = new FallState(playerController);
         DodgeState = new DodgeState(playerController);
-        AttackState = new AttackState(playerController);
+        AttackState = new AttackState(playerController, attackDataContainer);
     }
 
     // 상태 초기화
