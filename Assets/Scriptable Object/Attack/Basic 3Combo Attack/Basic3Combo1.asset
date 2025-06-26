@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd6ae9d876432147ae7a0df379686c8, type: 3}
   m_Name: Basic3Combo1
   m_EditorClassIdentifier: 
-  CanNextAttackStartTime: 0.43
-  CanNextAttackEndTime: 0.85
-  CanMoveStartTime: 0.85
+  CanNextAttackStartTime: 0.29
+  CanNextAttackEndTime: 0.68
+  CanMoveStartTime: 0.68

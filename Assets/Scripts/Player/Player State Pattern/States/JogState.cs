@@ -12,6 +12,7 @@ public class JogState : IState
     public void Enter()
     {
         Debug.Log("조깅 상태 진입");
+        _controller.Anim.SetBool("IsMove", true);
         _controller.SetTargetSpeed(_controller.JogSpeed);
     }
 
@@ -35,7 +36,7 @@ public class JogState : IState
 
     public void Exit()
     {
-
+        _controller.Anim.SetBool("IsMove", false);
     }
 
     private void TransitionTo()

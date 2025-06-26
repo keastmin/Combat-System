@@ -15,6 +15,7 @@ public class RunState : IState
     public void Enter()
     {
         Debug.Log("달리기 상태 진입");
+        _controller.Anim.SetBool("IsMove", true);
         _controller.SetTargetSpeed(_controller.RunSpeed); // 달리기 속도 설정
         _isFastRun = false;
         _runTime = 0f;
@@ -50,6 +51,7 @@ public class RunState : IState
 
     public void Exit()
     {
+        _controller.Anim.SetBool("IsMove", false);
         _controller.CanTurn = true; // 달리기 상태 종료 후 턴이 가능한 시간을 잠깐 제공
     }
 
@@ -62,6 +64,10 @@ public class RunState : IState
         else if (_controller.InputC.JumpInput)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.JumpState);
+        }
+        else if (_controller.InputC.BasicAttackInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.DashAttackState);
         }
         else if (!_controller.Mover.IsOnGround)
         {

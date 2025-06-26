@@ -50,7 +50,19 @@ public class DodgeState : IState
     {
         _dodgeStartTime += Time.deltaTime;
 
-        if (_dodgeStartTime > _controller.DodgeTime)
+        if(_controller.InputC.JumpInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.JumpState);
+        }
+        else if (_controller.InputC.BasicAttackInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.AttackState);
+        }
+        else if (_controller.InputC.BasicAttackInput)
+        {
+            _controller.StateMachine.Transition(_controller.StateMachine.DashAttackState);
+        }
+        else if (_dodgeStartTime > _controller.DodgeTime)
         {
             if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f)
             {
@@ -60,10 +72,6 @@ public class DodgeState : IState
             {
                 _controller.StateMachine.Transition(_controller.StateMachine.IdleState);
             }
-        }
-        else if (_controller.InputC.JumpInput)
-        {
-            _controller.StateMachine.Transition(_controller.StateMachine.JumpState);
         }
     }
 }

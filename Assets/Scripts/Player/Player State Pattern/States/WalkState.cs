@@ -11,6 +11,7 @@ public class WalkState : IState
 
     public void Enter()
     {
+        _controller.Anim.SetBool("IsMove", true);
         _controller.SetTargetSpeed(_controller.WalkSpeed);
     }
 
@@ -34,7 +35,7 @@ public class WalkState : IState
 
     public void Exit()
     {
-        
+        _controller.Anim.SetBool("IsMove", false);
     }
 
     private void TransitionTo()
