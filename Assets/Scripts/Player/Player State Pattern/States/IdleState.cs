@@ -13,6 +13,7 @@ public class IdleState : IState
     public void Enter()
     {
         Debug.Log("Idle 상태 진입");
+        _controller.Anim.SetBool("IsMove", true);
         _controller.SetTargetSpeed(0f);
     }
 
@@ -35,7 +36,7 @@ public class IdleState : IState
 
     public void Exit()
     {
-
+        _controller.Anim.SetBool("IsMove", false);
     }
 
     private void TransitionTo()

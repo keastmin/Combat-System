@@ -86,6 +86,12 @@ public class AttackState : IState
                 _currentComboIndex++;
                 _controller.StateMachine.Transition(_controller.StateMachine.AttackState);
             }
+            else if (_controller.InputC.DodgeInput)
+            {
+                _controller.Anim.SetBool("IsAttacking", false);
+                _currentComboIndex = 0;
+                _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
+            }
         }
     }
 }

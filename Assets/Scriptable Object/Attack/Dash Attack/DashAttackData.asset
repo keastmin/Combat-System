@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcd6ae9d876432147ae7a0df379686c8, type: 3}
-  m_Name: Basic3Combo3
+  m_Script: {fileID: 11500000, guid: 84718111aa4282348a8ec80e3f7f641b, type: 3}
+  m_Name: DashAttackData
   m_EditorClassIdentifier: 
-  CanNextAttackStartTime: 0
-  CanNextAttackEndTime: 0
-  CanMoveStartTime: 0.68
+  EndAttackTime: 1

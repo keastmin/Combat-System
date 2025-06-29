@@ -4113,6 +4113,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eebabe5892ac39c4b9973a08b4f59a49, type: 2}
   - {fileID: 11400000, guid: d4833b3eab8d4494ea3739ad322ecf3c, type: 2}
   - {fileID: 11400000, guid: 9ddf4579848fbb74f91afe8fdd32c1ee, type: 2}
+  DodgeAndRunAttackData: {fileID: 11400000, guid: 9f9ecc5c808af9f40a30332b4937bbb9, type: 2}
 --- !u!4 &764798905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7809573082221298805, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}

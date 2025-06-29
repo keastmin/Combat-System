@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Basic3Combo2
   m_EditorClassIdentifier: 
   CanNextAttackStartTime: 0.34
-  CanNextAttackEndTime: 0.85
-  CanMoveStartTime: 0.85
+  CanNextAttackEndTime: 0.68
+  CanMoveStartTime: 0.68

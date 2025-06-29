@@ -249,25 +249,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region 공격
-
-    public void DetectAimingEnemy()
-    {
-
-    }
-
-    public void RotateToEnemy()
-    {
-
-    }
-
-    public void MoveToEnemy()
-    {
-
-    }
-
-    #endregion
-
     #endregion
 
 
