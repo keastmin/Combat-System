@@ -19,6 +19,8 @@ public class AttackState : IState
 
     public void Enter()
     {
+        Debug.Log("AttackState 진입, Combo: " + (_currentComboIndex + 1));
+
         _controller.Anim.SetBool("IsAttacking", true);
         _controller.Anim.SetTrigger("IsNextAttack");
         _attackStartToTime = 0f;
