@@ -4114,6 +4114,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d4833b3eab8d4494ea3739ad322ecf3c, type: 2}
   - {fileID: 11400000, guid: 9ddf4579848fbb74f91afe8fdd32c1ee, type: 2}
   DodgeAndRunAttackData: {fileID: 11400000, guid: 9f9ecc5c808af9f40a30332b4937bbb9, type: 2}
+--- !u!114 &728640255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728640228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0ca5f0bcb6c82e4fb325e57b0b22f48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponSlot: []
 --- !u!4 &764798905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7809573082221298805, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
@@ -4687,9 +4700,12 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 722071625524053266, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       insertIndex: 2
+      addedObject: {fileID: 728640255}
+    - targetCorrespondingSourceObject: {fileID: 722071625524053266, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      insertIndex: 3
       addedObject: {fileID: 728640246}
     - targetCorrespondingSourceObject: {fileID: 722071625524053266, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
-      insertIndex: 6
+      insertIndex: 7
       addedObject: {fileID: 728640238}
   m_SourcePrefab: {fileID: 100100000, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
 --- !u!222 &323843365994027668
