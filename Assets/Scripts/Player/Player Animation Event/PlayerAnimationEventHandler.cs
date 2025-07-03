@@ -2,15 +2,31 @@ using UnityEngine;
 
 public class PlayerAnimationEventHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    #region 필드
+
+    // Attack
+    private bool _openNextComboInput = false;
+
+    #endregion
+
+    #region 프로퍼티
+
+    // Attack
+    public bool OpenNextComboInput => _openNextComboInput;
+
+    #endregion
+
+    #region Attack 애니메이션 이벤트
+
+    public void NextComboAttackOpen()
     {
-        
+        _openNextComboInput = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void NextComboAttackClose()
     {
-        
+        _openNextComboInput = false;
     }
+
+    #endregion
 }
