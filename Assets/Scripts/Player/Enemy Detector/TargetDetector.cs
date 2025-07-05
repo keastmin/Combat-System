@@ -87,18 +87,6 @@ public class TargetDetector : MonoBehaviour
         return false;
     }
 
-    // 공격을 이어가고자 하는 락온, 하나의 공격 사이클이 끝나면 자동 해제
-    private void AttackLockOn()
-    {
-
-    }
-
-    // 사용자가 직접 락온 하여 거리가 멀어지지 않는 한 취소되지 않는 락온
-    private void ToggleLockOn()
-    {
-
-    }
-
     private void OnDrawGizmos()
     {
         if (_debugHardTargetZone)
