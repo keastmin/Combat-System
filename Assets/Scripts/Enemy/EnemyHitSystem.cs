@@ -18,7 +18,7 @@ public class EnemyHitSystem : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         // 공격을 받은 콜라이더가 자신에게 피해를 줄 수 있는 콜라이더인지 확인
-        if(other.gameObject.layer == _hitColliderLayer)
+        if (((1 << other.gameObject.layer) & _hitColliderLayer) != 0)
         {
             Debug.Log("맞음");
         }
