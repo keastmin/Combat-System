@@ -4891,16 +4891,40 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 9f9ecc5c808af9f40a30332b4937bbb9, type: 2}
     - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: _attackDatas.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: _attackDatas.Array.data[0].AttackName
       value: Basic 3Combo 1
       objectReference: {fileID: 0}
     - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _attackDatas.Array.data[1].AttackName
+      value: Basic 3Combo 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _attackDatas.Array.data[2].AttackName
+      value: Basic 3Combo 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _attackDatas.Array.data[3].AttackName
+      value: Dash Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: _attackDatas.Array.data[0].PlayerAttackData
       value: 
       objectReference: {fileID: 11400000, guid: a4e5551332b7ab64db71c2ce502dc73f, type: 2}
+    - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _attackDatas.Array.data[1].PlayerAttackData
+      value: 
+      objectReference: {fileID: 11400000, guid: dfccbce6ed082b842ac395c2077157b1, type: 2}
+    - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _attackDatas.Array.data[2].PlayerAttackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 05910bab47a0ff744a909866cc164549, type: 2}
+    - target: {fileID: 37032358309623990, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
+      propertyPath: _attackDatas.Array.data[3].PlayerAttackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c2c4676638c1e046aeefb5ddf6aab82, type: 2}
     - target: {fileID: 44420966138881375, guid: 42a5685571ea3b147ba91ff2b77c03e5, type: 3}
       propertyPath: m_Layer
       value: 6
