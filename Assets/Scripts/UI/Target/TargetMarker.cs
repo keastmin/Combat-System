@@ -7,9 +7,6 @@ public class TargetMarker : MonoBehaviour
     [SerializeField] private Image _targetImage;
     [SerializeField] private Canvas _canvas;
 
-
-    private NearestEnemyInfo _nearestEnemyInfo;
-
     private void Update()
     {
         if (_detector != null && _targetImage != null)

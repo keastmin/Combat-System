@@ -9,56 +9,50 @@ public class TargetDetector : MonoBehaviour
 {
     [Header("Target Information")]
     [SerializeField] private LayerMask _targetLayerMask;
-    [SerializeField] private Image _targetMarkImage;
 
-    [Header("Hard Targeting")]
-    [SerializeField] private float _hardTargetingRange = 2f;
-
-    [Header("Soft Targeting")]
-    [SerializeField] private float _softTargetingRange = 4f;
-    [SerializeField] private float _softTargetingAngle = 150f;
+    [Header("Targeting")]
+    [SerializeField] private float _targetingRange = 2f;
+    [SerializeField] private int _maxDetectCount = 15; // 최대 감지 가능한 적의 수
 
     [Header("Debug")]
     [SerializeField] private bool _debugHardTargetZone = false;
 
-    public float MaxTargetingDistance => _hardTargetingRange;
+    public float MaxTargetingDistance => _targetingRange;
 
-    private NearestEnemyInfo _neareastEnemy = NearestEnemyInfo.Empty;
-    public NearestEnemyInfo NearestEnemy => _neareastEnemy;
+    private NearestEnemyInfo _nearestEnemy = NearestEnemyInfo.Empty;
+    public NearestEnemyInfo NearestEnemy => _nearestEnemy;
 
     // 감지된 타겟 콜라이더
     private Collider[] _overlapTargetColliders;
 
     private void Awake()
     {
-        _overlapTargetColliders = new Collider[15]; // 최대 10개의 적을 감지할 수 있도록 설정
+        _nearestEnemy = NearestEnemyInfo.Empty;
+        _overlapTargetColliders = new Collider[_maxDetectCount]; // 최대 감지 가능한 적의 수
     }
 
     private void Update()
     {
-        UpdateTarget();
-    }
+        _nearestEnemy = NearTargeting();
 
-    private void UpdateTarget()
-    {
-        NearestEnemyInfo newNearestEnemy = NearestEnemyInfo.Empty;
-        bool hardTargeting = false;
-
-        hardTargeting = NearTargeting(out newNearestEnemy);
-
-        _neareastEnemy = newNearestEnemy;
+        // 초기화
+        for(int i = 0; i < _maxDetectCount; i++)
+        {
+            if (_overlapTargetColliders[i] != null)
+            {
+                _overlapTargetColliders[i] = null;
+            }
+        }
     }
 
     // 플레이어를 기준으로 360도 회전하는 전체 방향에서 적대적이거나 이미 전투 중인 적 중 가장 가까운 적을 찾습니다.
-    private bool NearTargeting(out NearestEnemyInfo nearestEnemy)
+    private NearestEnemyInfo NearTargeting()
     {
-        nearestEnemy = NearestEnemyInfo.Empty;
-
+        NearestEnemyInfo newNearestEnemyInfo = NearestEnemyInfo.Empty;
         Vector3 origin = transform.position;
-        Vector3 parellelOrigin = new Vector3(origin.x, 0f, origin.z);
-        float radius = _hardTargetingRange;
+        float radius = _targetingRange;
         int detectedCount = 0;
-        float minParellelDistance = 5f;
+        float minDistance = _targetingRange + 1f;
 
         detectedCount = Physics.OverlapSphereNonAlloc(origin, radius, _overlapTargetColliders, _targetLayerMask);
 
@@ -68,30 +62,28 @@ public class TargetDetector : MonoBehaviour
             {
                 if(targetCollider != null)
                 {
-                    Vector3 parellelTargetPosition = new Vector3(targetCollider.transform.position.x, 0f, targetCollider.transform.position.z);
-                    float distance = Vector3.Distance(parellelTargetPosition, parellelOrigin);
+                    float distance = Vector3.Distance(targetCollider.transform.position, origin);
 
-                    if(minParellelDistance > distance)
+                    if(minDistance > distance)
                     {
-                        nearestEnemy.Collider = targetCollider;
-                        nearestEnemy.Point = targetCollider.transform.position;
-                        nearestEnemy.ParellelDistance = distance;
-                        nearestEnemy.InRange = true;
+                        minDistance = distance;
+
+                        newNearestEnemyInfo.Collider = targetCollider;
+                        newNearestEnemyInfo.Point = targetCollider.transform.position;
+                        newNearestEnemyInfo.InRange = true;
                     }
                 }
             }
-
-            return true;
         }
 
-        return false;
+        return newNearestEnemyInfo;
     }
 
     private void OnDrawGizmos()
     {
         if (_debugHardTargetZone)
         {
-            Gizmos.DrawWireSphere(transform.position, _hardTargetingRange);
+            Gizmos.DrawWireSphere(transform.position, _targetingRange);
         }
     }
 }

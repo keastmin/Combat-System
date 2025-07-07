@@ -10,7 +10,7 @@ public class DashAttackState : IState
     public DashAttackState(PlayerController controller, PlayerAttackDataContainer attackContainer)
     {
         _controller = controller;
-        _dashAttackData = attackContainer.DodgeAndRunAttackData;
+        _dashAttackData = attackContainer.DashAttackData;
     }
 
     public void Enter()
