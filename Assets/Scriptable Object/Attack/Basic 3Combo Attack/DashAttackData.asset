@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb195a5263b213b469494d8ac12c95fa, type: 3}
+  m_Name: DashAttackData
+  m_EditorClassIdentifier: 
+  Hitbox: {fileID: 831241628642692183, guid: 88d842b174cb4e5409f3c7df1fd08ceb, type: 3}
+  HitboxPosition: {x: 0, y: 0.51, z: 0.86499786}
+  HitboxRotation: {x: 0, y: 0, z: 0}
+  AttackEffect: {fileID: 5839304936527939306, guid: 8e5acdc080e84f84f9fa17a2e958a0c0, type: 3}
+  AttackEffectPosition: {x: 0, y: 0.75, z: 0}
+  AttackEffectRotation: {x: -52.573, y: -101.736, z: 7.471}

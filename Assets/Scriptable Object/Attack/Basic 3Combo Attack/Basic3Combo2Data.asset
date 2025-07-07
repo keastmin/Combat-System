@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb195a5263b213b469494d8ac12c95fa, type: 3}
+  m_Name: Basic3Combo2Data
+  m_EditorClassIdentifier: 
+  Hitbox: {fileID: 1836540777899553561, guid: 7b71dba7fa4445d4b99827b03a095f91, type: 3}
+  HitboxPosition: {x: 0, y: 0.51, z: 0.86499786}
+  HitboxRotation: {x: 0, y: 0, z: 0}
+  AttackEffect: {fileID: 3115691073240592691, guid: e512cb6cd7835564295667f68f6d5e7f, type: 3}
+  AttackEffectPosition: {x: 0, y: 0.87, z: 0}
+  AttackEffectRotation: {x: 0, y: 0, z: 72.609}

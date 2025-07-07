@@ -36,40 +36,28 @@ public class PlayerAttackDataContainer : MonoBehaviour
         var effectObject = attackData.AttackEffect;
         var hitboxObject = attackData.Hitbox;
 
-        Transform playerTransform = transform; // 혹은 _controller.transform 등 네 플레이어 Transform
+        Transform playerTransform = transform;
 
         if (effectObject != null)
         {
-            // 로컬 Position → 월드 Position
-            Vector3 worldPos = playerTransform.TransformPoint(attackData.AttackEffectPosition);
-
-            // 로컬 Rotation → 월드 Rotation
             Quaternion localRot = Quaternion.Euler(attackData.AttackEffectRotation);
-            Quaternion worldRot = playerTransform.rotation * localRot;
 
-            var obj = Instantiate(effectObject, worldPos, worldRot);
+            var obj = Instantiate(effectObject, playerTransform);
+            obj.transform.localPosition = attackData.AttackEffectPosition;
+            obj.transform.localRotation = localRot;
 
             ParticleSystem effect;
             obj.TryGetComponent(out effect);
             effect?.Play();
-
-            Destroy(obj, 5f);
-
-            // Pool로 바꾸고 싶으면:
-            // var obj = poolManager.GetFromPool(effectKey, effectObject, worldPos, worldRot);
         }
 
         if (hitboxObject != null)
         {
-            Vector3 worldPos = playerTransform.TransformPoint(attackData.HitboxPosition);
             Quaternion localRot = Quaternion.Euler(attackData.HitboxRotation);
-            Quaternion worldRot = playerTransform.rotation * localRot;
-
-            var obj = Instantiate(hitboxObject, worldPos, worldRot);
-            Destroy(obj, 5f);
-
-            // Pool 버전:
-            // var obj = poolManager.GetFromPool(hitboxKey, hitboxObject, worldPos, worldRot);
+            var obj = Instantiate(hitboxObject, playerTransform);
+            obj.transform.localPosition = attackData.HitboxPosition;
+            obj.transform.localRotation = localRot;
+            Destroy(obj, 0.1f);
         }
     }
 }
