@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(InputController), typeof(Animator))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [Header("평행 움직임")]
     [SerializeField] private float _speedLerpTime = 8f; // 속도 보간 시간
@@ -81,6 +81,10 @@ public class PlayerController : MonoBehaviour
     // 플레이어 공격 데이터 컨테이너
     private PlayerAttackDataContainer _attackDataContainer;
 
+    // 데미지
+    private bool _isDamaged = false;
+    public bool IsDamaged => _isDamaged;
+
     private void Awake()
     {
         InitComponent();
@@ -96,6 +100,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            TakeDamage(10, transform.position);
+        }
+
         LerpCurrentSpeed(_targetSpeed, _currentSpeed, _speedLerpTime); // 속도 세팅
         TurnChecker(); // 턴 체크
         _stateMachine?.Execute();
@@ -307,4 +316,14 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    public void TakeDamage(int damage, Vector3 hitPoint)
+    {
+        _isDamaged = true;
+    }
+
+    public void ClearDamage()
+    {
+        _isDamaged = false;
+    }
 }

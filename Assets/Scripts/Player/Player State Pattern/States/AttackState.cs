@@ -30,7 +30,10 @@ public class AttackState : IState
         _controller.SetCurrentSpeed(0f);
 
         if (_controller.NearestEnemy.InRange)
+        {
             _target = _controller.NearestEnemy.Point - _controller.transform.position;
+            _target.y = 0f;
+        }
         else
             _target = _controller.transform.forward * 1.3f;
     }
