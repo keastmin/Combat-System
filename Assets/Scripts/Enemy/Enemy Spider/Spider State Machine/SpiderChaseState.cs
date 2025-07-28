@@ -11,15 +11,12 @@ public class SpiderChaseState : IState
 
     public void Enter()
     {
-        _enemySpider.EnemyNavMeshAgent.speed = _enemySpider.ChaseSpeed;
-        _enemySpider.EnemyNavMeshAgent.isStopped = false;
     }
 
     public void Execute()
     {
         if(_enemySpider.TargetTransform != null)
         {
-            _enemySpider.EnemyNavMeshAgent.SetDestination(_enemySpider.TargetTransform.position);
         }
 
         TransitionTo();

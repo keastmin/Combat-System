@@ -30,7 +30,6 @@ public class EnemySpawner : MonoBehaviour
 
         // EnemyBase 클래스 가져오고 설정하기
         enemy.TryGetComponent(out EnemyBase enemyBase);
-        enemyBase.SetUp(transform.position, _patrolRadius);
 
         // 스폰 위치 계산
         Vector3 spawnPosition = transform.position;
@@ -40,15 +39,6 @@ public class EnemySpawner : MonoBehaviour
 
         spawnPosition.x += Mathf.Cos(angle) * distance;
         spawnPosition.z += Mathf.Sin(angle) * distance;
-
-        if (NavMesh.SamplePosition(spawnPosition, out NavMeshHit hit, _spawnRadius, enemyBase.EnemyNavMeshAgent.areaMask))
-        {
-            spawnPosition = hit.position;
-        }
-        else
-        {
-            Debug.LogWarning("경로를 찾지 못했습니다.");
-        }
 
         // 스폰 위치 설정
         enemy.transform.position = spawnPosition;
