@@ -81,14 +81,12 @@ public class EnemySpider : NormalEnemy
     private void Update()
     {
         DetectTarget();
-        _animator.SetFloat("moveSpeed", _navMeshAgent.velocity.magnitude);
 
         _stateMachine.Execute();
     }
 
     private void InitComponents()
     {
-        InitNavMesh();
         TryGetComponent(out _rigidbody);
         TryGetComponent(out _animator);
     }

@@ -14,8 +14,6 @@ public class SpiderIdleState : IState
 
     public void Enter()
     {
-        _enemySpider.EnemyNavMeshAgent.isStopped = true;
-
         _idlePlayTime = 0f;
         _patrolTime = Random.Range(_enemySpider.MinIdlePlayTime, _enemySpider.MaxIdlePlayTime);
     }

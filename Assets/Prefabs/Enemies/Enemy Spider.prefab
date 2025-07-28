@@ -2339,7 +2339,6 @@ GameObject:
   - component: {fileID: 4567815820198184231}
   - component: {fileID: 8833866139711611327}
   - component: {fileID: 6630569419744042715}
-  - component: {fileID: 8203841426810691730}
   m_Layer: 7
   m_Name: Enemy Spider
   m_TagString: Enemy
@@ -2459,28 +2458,6 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!195 &8203841426810691730
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8059702257420196804}
-  m_Enabled: 1
-  m_AgentTypeID: -334000983
-  m_Radius: 1
-  m_Speed: 2
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2.2
-  m_BaseOffset: -0.18
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &8060919571978234938
 GameObject:
   m_ObjectHideFlags: 0
