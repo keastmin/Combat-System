@@ -1,326 +1,14 @@
 fileFormatVersion: 2
 guid: 77a3d89d1deb05d43a6c6bbe5e083357
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: ball_l
-    100002: ball_r
-    100004: calf_l
-    100006: calf_r
-    100008: calf_twist_01_l
-    100010: calf_twist_01_r
-    100012: clavicle_l
-    100014: clavicle_r
-    100016: foot_l
-    100018: foot_r
-    100020: hand_l
-    100022: hand_r
-    100024: head
-    100026: ik_foot_l
-    100028: ik_foot_r
-    100030: ik_foot_root
-    100032: ik_hand_gun
-    100034: ik_hand_l
-    100036: ik_hand_r
-    100038: ik_hand_root
-    100040: index_01_l
-    100042: index_01_r
-    100044: index_02_l
-    100046: index_02_r
-    100048: index_03_l
-    100050: index_03_r
-    100052: lowerarm_l
-    100054: lowerarm_r
-    100056: lowerarm_twist_01_l
-    100058: lowerarm_twist_01_r
-    100060: //RootNode
-    100062: middle_01_l
-    100064: middle_01_r
-    100066: middle_02_l
-    100068: middle_02_r
-    100070: middle_03_l
-    100072: middle_03_r
-    100074: neck_01
-    100076: pelvis
-    100078: pinky_01_l
-    100080: pinky_01_r
-    100082: pinky_02_l
-    100084: pinky_02_r
-    100086: pinky_03_l
-    100088: pinky_03_r
-    100090: ring_01_l
-    100092: ring_01_r
-    100094: ring_02_l
-    100096: ring_02_r
-    100098: ring_03_l
-    100100: ring_03_r
-    100102: spine_01
-    100104: spine_02
-    100106: spine_03
-    100108: thigh_l
-    100110: thigh_r
-    100112: thigh_twist_01_l
-    100114: thigh_twist_01_r
-    100116: thumb_01_l
-    100118: thumb_01_r
-    100120: thumb_02_l
-    100122: thumb_02_r
-    100124: thumb_03_l
-    100126: thumb_03_r
-    100128: upperarm_l
-    100130: upperarm_r
-    100132: upperarm_twist_01_l
-    100134: upperarm_twist_01_r
-    100136: root
-    100138: Bip01
-    100140: Bip01 Footsteps
-    100142: Bip01 Head
-    100144: Bip01 HeadNub
-    100146: Bip01 L Calf
-    100148: Bip01 L Clavicle
-    100150: Bip01 L Finger0
-    100152: Bip01 L Finger01
-    100154: Bip01 L Finger02
-    100156: Bip01 L Finger0Nub
-    100158: Bip01 L Finger1
-    100160: Bip01 L Finger11
-    100162: Bip01 L Finger12
-    100164: Bip01 L Finger1Nub
-    100166: Bip01 L Finger2
-    100168: Bip01 L Finger21
-    100170: Bip01 L Finger22
-    100172: Bip01 L Finger2Nub
-    100174: Bip01 L Finger3
-    100176: Bip01 L Finger31
-    100178: Bip01 L Finger32
-    100180: Bip01 L Finger3Nub
-    100182: Bip01 L Finger4
-    100184: Bip01 L Finger41
-    100186: Bip01 L Finger42
-    100188: Bip01 L Finger4Nub
-    100190: Bip01 L Foot
-    100192: Bip01 L Forearm
-    100194: Bip01 L ForeTwist
-    100196: Bip01 L ForeTwist1
-    100198: Bip01 L Hand
-    100200: Bip01 L Thigh
-    100202: Bip01 L Toe0
-    100204: Bip01 L Toe0Nub
-    100206: Bip01 L UpperArm
-    100208: Bip01 LCalfTwist
-    100210: Bip01 LCalfTwist1
-    100212: Bip01 LThighTwist
-    100214: Bip01 LThighTwist1
-    100216: Bip01 LUpArmTwist
-    100218: Bip01 LUpArmTwist1
-    100220: Bip01 Neck
-    100222: Bip01 Pelvis
-    100224: Bip01 Prop1
-    100226: Bip01 R Calf
-    100228: Bip01 R Clavicle
-    100230: Bip01 R Finger0
-    100232: Bip01 R Finger01
-    100234: Bip01 R Finger02
-    100236: Bip01 R Finger0Nub
-    100238: Bip01 R Finger1
-    100240: Bip01 R Finger11
-    100242: Bip01 R Finger12
-    100244: Bip01 R Finger1Nub
-    100246: Bip01 R Finger2
-    100248: Bip01 R Finger21
-    100250: Bip01 R Finger22
-    100252: Bip01 R Finger2Nub
-    100254: Bip01 R Finger3
-    100256: Bip01 R Finger31
-    100258: Bip01 R Finger32
-    100260: Bip01 R Finger3Nub
-    100262: Bip01 R Finger4
-    100264: Bip01 R Finger41
-    100266: Bip01 R Finger42
-    100268: Bip01 R Finger4Nub
-    100270: Bip01 R Foot
-    100272: Bip01 R Forearm
-    100274: Bip01 R ForeTwist
-    100276: Bip01 R ForeTwist1
-    100278: Bip01 R Hand
-    100280: Bip01 R Thigh
-    100282: Bip01 R Toe0
-    100284: Bip01 R Toe0Nub
-    100286: Bip01 R UpperArm
-    100288: Bip01 RCalfTwist
-    100290: Bip01 RCalfTwist1
-    100292: Bip01 RThighTwist
-    100294: Bip01 RThighTwist1
-    100296: Bip01 RUpArmTwist
-    100298: Bip01 RUpArmTwist1
-    100300: Bip01 Spine
-    100302: Bip01 Spine1
-    100304: Bip01 Spine2
-    100306: Dummy01
-    100308: Dummy02
-    100310: IK_Weapon_R_Bone
-    400000: ball_l
-    400002: ball_r
-    400004: calf_l
-    400006: calf_r
-    400008: calf_twist_01_l
-    400010: calf_twist_01_r
-    400012: clavicle_l
-    400014: clavicle_r
-    400016: foot_l
-    400018: foot_r
-    400020: hand_l
-    400022: hand_r
-    400024: head
-    400026: ik_foot_l
-    400028: ik_foot_r
-    400030: ik_foot_root
-    400032: ik_hand_gun
-    400034: ik_hand_l
-    400036: ik_hand_r
-    400038: ik_hand_root
-    400040: index_01_l
-    400042: index_01_r
-    400044: index_02_l
-    400046: index_02_r
-    400048: index_03_l
-    400050: index_03_r
-    400052: lowerarm_l
-    400054: lowerarm_r
-    400056: lowerarm_twist_01_l
-    400058: lowerarm_twist_01_r
-    400060: //RootNode
-    400062: middle_01_l
-    400064: middle_01_r
-    400066: middle_02_l
-    400068: middle_02_r
-    400070: middle_03_l
-    400072: middle_03_r
-    400074: neck_01
-    400076: pelvis
-    400078: pinky_01_l
-    400080: pinky_01_r
-    400082: pinky_02_l
-    400084: pinky_02_r
-    400086: pinky_03_l
-    400088: pinky_03_r
-    400090: ring_01_l
-    400092: ring_01_r
-    400094: ring_02_l
-    400096: ring_02_r
-    400098: ring_03_l
-    400100: ring_03_r
-    400102: spine_01
-    400104: spine_02
-    400106: spine_03
-    400108: thigh_l
-    400110: thigh_r
-    400112: thigh_twist_01_l
-    400114: thigh_twist_01_r
-    400116: thumb_01_l
-    400118: thumb_01_r
-    400120: thumb_02_l
-    400122: thumb_02_r
-    400124: thumb_03_l
-    400126: thumb_03_r
-    400128: upperarm_l
-    400130: upperarm_r
-    400132: upperarm_twist_01_l
-    400134: upperarm_twist_01_r
-    400136: root
-    400138: Bip01
-    400140: Bip01 Footsteps
-    400142: Bip01 Head
-    400144: Bip01 HeadNub
-    400146: Bip01 L Calf
-    400148: Bip01 L Clavicle
-    400150: Bip01 L Finger0
-    400152: Bip01 L Finger01
-    400154: Bip01 L Finger02
-    400156: Bip01 L Finger0Nub
-    400158: Bip01 L Finger1
-    400160: Bip01 L Finger11
-    400162: Bip01 L Finger12
-    400164: Bip01 L Finger1Nub
-    400166: Bip01 L Finger2
-    400168: Bip01 L Finger21
-    400170: Bip01 L Finger22
-    400172: Bip01 L Finger2Nub
-    400174: Bip01 L Finger3
-    400176: Bip01 L Finger31
-    400178: Bip01 L Finger32
-    400180: Bip01 L Finger3Nub
-    400182: Bip01 L Finger4
-    400184: Bip01 L Finger41
-    400186: Bip01 L Finger42
-    400188: Bip01 L Finger4Nub
-    400190: Bip01 L Foot
-    400192: Bip01 L Forearm
-    400194: Bip01 L ForeTwist
-    400196: Bip01 L ForeTwist1
-    400198: Bip01 L Hand
-    400200: Bip01 L Thigh
-    400202: Bip01 L Toe0
-    400204: Bip01 L Toe0Nub
-    400206: Bip01 L UpperArm
-    400208: Bip01 LCalfTwist
-    400210: Bip01 LCalfTwist1
-    400212: Bip01 LThighTwist
-    400214: Bip01 LThighTwist1
-    400216: Bip01 LUpArmTwist
-    400218: Bip01 LUpArmTwist1
-    400220: Bip01 Neck
-    400222: Bip01 Pelvis
-    400224: Bip01 Prop1
-    400226: Bip01 R Calf
-    400228: Bip01 R Clavicle
-    400230: Bip01 R Finger0
-    400232: Bip01 R Finger01
-    400234: Bip01 R Finger02
-    400236: Bip01 R Finger0Nub
-    400238: Bip01 R Finger1
-    400240: Bip01 R Finger11
-    400242: Bip01 R Finger12
-    400244: Bip01 R Finger1Nub
-    400246: Bip01 R Finger2
-    400248: Bip01 R Finger21
-    400250: Bip01 R Finger22
-    400252: Bip01 R Finger2Nub
-    400254: Bip01 R Finger3
-    400256: Bip01 R Finger31
-    400258: Bip01 R Finger32
-    400260: Bip01 R Finger3Nub
-    400262: Bip01 R Finger4
-    400264: Bip01 R Finger41
-    400266: Bip01 R Finger42
-    400268: Bip01 R Finger4Nub
-    400270: Bip01 R Foot
-    400272: Bip01 R Forearm
-    400274: Bip01 R ForeTwist
-    400276: Bip01 R ForeTwist1
-    400278: Bip01 R Hand
-    400280: Bip01 R Thigh
-    400282: Bip01 R Toe0
-    400284: Bip01 R Toe0Nub
-    400286: Bip01 R UpperArm
-    400288: Bip01 RCalfTwist
-    400290: Bip01 RCalfTwist1
-    400292: Bip01 RThighTwist
-    400294: Bip01 RThighTwist1
-    400296: Bip01 RUpArmTwist
-    400298: Bip01 RUpArmTwist1
-    400300: Bip01 Spine
-    400302: Bip01 Spine1
-    400304: Bip01 Spine2
-    400306: Dummy01
-    400308: Dummy02
-    400310: IK_Weapon_R_Bone
-    7400000: Walk_ver_A_Back_L45_Root
-    9500000: //RootNode
-    2186277476908879412: ImportLogs
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      74: -120011947138502787
+    second: Walk_ver_A_Back_L45_Root
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -333,27 +21,32 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'thigh_l'
-      : position error = 11.962008 mm\n\t'calf_l' : position error = 8.482636 mm\n\t'foot_l'
-      : position error = 10.231381 mm\n\t'ball_l' : position error = 7.014318 mm\n\t'thigh_r'
-      : position error = 11.875464 mm\n\t'calf_r' : position error = 9.887331 mm\n\t'foot_r'
-      : position error = 7.236276 mm\n\t'ball_r' : position error = 5.966428 mm\n"
+      : position error = 11.962161 mm\n\t'calf_l' : position error = 8.482624 mm\n\t'foot_l'
+      : position error = 10.231374 mm\n\t'ball_l' : position error = 7.014236 mm\n\t'thigh_r'
+      : position error = 11.875548 mm\n\t'calf_r' : position error = 9.887573 mm\n\t'foot_r'
+      : position error = 7.236366 mm\n\t'ball_r' : position error = 5.966521 mm\n"
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'M_katana_Blade@Walk_ver_A_Back_L45_Root' has
+      import animation warnings that might lower retargeting quality:\nNote: Activate
+      translation DOF on avatar to improve retargeting quality.\n\t'calf_r' has translation
+      animation that will be discarded.\n\t'foot_r' has translation animation that
+      will be discarded.\n\t'ball_r' has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
-    animationRotationError: 0.2
-    animationPositionError: 0.2
-    animationScaleError: 0.2
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Walk_ver_A_Back_L45_Root
-      takeName: Take 001
+      takeName: M_katana_Blade@Walk_ver_A_Back_L45_Root
+      internalID: 0
       firstFrame: 0
       lastFrame: 32
       wrapMode: 0
@@ -362,7 +55,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -519,32 +212,35 @@ ModelImporter:
       maskType: 1
       maskSource: {fileID: 31900000, guid: b038f001f1b41254e8e6cdb37c9fab85, type: 2}
       additiveReferencePoseFrame: 0
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -553,10 +249,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 1
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: thigh_r
       humanName: RightUpperLeg
@@ -870,14 +566,6 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: index_01_r
-      humanName: Right Index Proximal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: index_02_r
       humanName: Right Index Intermediate
       limit:
@@ -968,6 +656,14 @@ ModelImporter:
         modified: 0
     - boneName: pelvis
       humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: index_01_r
+      humanName: Right Index Proximal
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -1332,14 +1028,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 43992d4f16e57574fa5d16ef485c0cbd,
     type: 3}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 2
   additionalBone: 0
   userData: 
   assetBundleName: 
@@ -1348,6 +1047,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 183324
   packageName: Powerful Sword Pack(Great Sword + Katana)
-  packageVersion: 2.1.1
+  packageVersion: 2.1.3
   assetPath: Assets/Resources/Grruzam Powerful Sword Animation(Great Sword, Katana)/Animation/M_Katana_Blade/1_Movements/2__Walk/A/M_katana_Blade@Walk_ver_A_Back_L45_Root.FBX
-  uploadId: 746091
+  uploadId: 770424
