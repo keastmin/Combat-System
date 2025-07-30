@@ -63,8 +63,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     public NearestEnemyInfo NearestEnemy => _targetDetector.NearestEnemy;
 
     // 상태 머신
-    private PlayerStateMachine _stateMachine;
+    [SerializeField] private PlayerStateMachine _stateMachine;
+    [SerializeField] private PlayerStateCondition _stateCondition;
     public PlayerStateMachine StateMachine => _stateMachine;
+    public PlayerStateCondition StateCondition => _stateCondition;
 
     // 입력 컨트롤러
     private InputController _inputC;
@@ -311,6 +313,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     // 상태머신 초기화
     private void InitStateMachine()
     {
+        _stateCondition = new PlayerStateCondition(this);
         _stateMachine = new PlayerStateMachine(this, _attackDataContainer);
         _stateMachine.Init(_stateMachine.IdleState); // 기본 상태를 Idle로 설정
     }

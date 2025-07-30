@@ -1,6 +1,8 @@
 using JetBrains.Annotations;
+using System;
 using UnityEngine;
 
+[Serializable]
 public class PlayerStateMachine
 {
     public IdleState IdleState; // 기본 상태
