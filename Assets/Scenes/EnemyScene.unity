@@ -812,6 +812,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Spider
       objectReference: {fileID: 0}
+    - target: {fileID: 8059702257420196804, guid: 9ee1befd2ca3d8b49a3ffc57fd5af5cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8350105409983497535, guid: 9ee1befd2ca3d8b49a3ffc57fd5af5cc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
