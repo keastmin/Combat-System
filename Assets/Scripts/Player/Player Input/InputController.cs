@@ -1,12 +1,29 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// WASD: 이동
+/// Left Ctrl: 걷기
+/// Space: 점프
+/// WASD Double Tab: 회피
+/// Left Mouse Button: 기본 공격
+/// Right Mouse Button: 패링, 무기 교체
+/// Q: 스킬 1
+/// E: 스킬 2
+/// Shift: 스킬 3
+/// </summary>
 [RequireComponent(typeof(PlayerInput))]
 public class InputController : MonoBehaviour
 {
+    [Header("선입력")]
+    [SerializeField] private float _bufferTime = 0.2f; // 선입력 시간
+    private Queue<InputCommand> _inputBuffer = new Queue<InputCommand>(); // 선입력 버퍼
+
     [Header("더블탭")]
-    [SerializeField] private float _doubleTabTime = 0.3f;
+    [SerializeField] private float _doubleTabTime = 0.3f; // 더블탭으로 인식되는 시간
 
     // Player Input 컴포넌트
     PlayerInput _input;
@@ -52,6 +69,8 @@ public class InputController : MonoBehaviour
         JumpInputDetect();
         DodgeInputDetect();
         BasicAttackInputDetect();
+
+        ProcessInputBuffer();
     }
 
     private void MoveInputDetect()
@@ -73,16 +92,14 @@ public class InputController : MonoBehaviour
 
     private void JumpInputDetect()
     {
-        if(_jumpAction != null)
+        if(_jumpAction != null && _jumpAction.triggered)
         {
-            _jumpInput = _jumpAction.triggered;
+            EnqueueCommand(CommandType.Jump); // 입력 버퍼에 저장
         }
     }
 
     private void DodgeInputDetect()
     {
-        _dodgeInput = false; // 초기화
-
         // 입력 받기, 처음 누르는 그 한 순간만 대응되는 lastInput[i]에 대응, W는 0, A는 1, S는 2, D는 3
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -113,7 +130,7 @@ public class InputController : MonoBehaviour
         }
         else
         {
-            _dodgeInput = true; // 더블 탭 입력 발생
+            EnqueueCommand(CommandType.Dodge); // 입력 버퍼에 저장
 
             for(int i = 0; i < 4; i++)
             {
@@ -143,9 +160,47 @@ public class InputController : MonoBehaviour
 
     private void BasicAttackInputDetect()
     {
-        if (_basicAttackAction != null) 
+        if (_basicAttackAction != null && _basicAttackAction.triggered) 
         {
-            _basicAttackInput = _basicAttackAction.triggered;
+            EnqueueCommand(CommandType.BasicAttack); // 입력 버퍼에 저장
         }
     }
+
+    #region 선입력 로직
+
+    // 선입력 버퍼에 입력 추가
+    private void EnqueueCommand(CommandType type)
+    {
+        _inputBuffer.Enqueue(new InputCommand(type, _bufferTime));
+    }
+
+    private void ProcessInputBuffer()
+    {
+        while(_inputBuffer.Any() && _inputBuffer.Peek().IsExpired)
+        {
+            _inputBuffer.Dequeue(); // 만료된 입력 삭제
+        }
+
+        if (!_inputBuffer.Any()) return;
+
+
+    }
+
+    private void ExecuteCommand(InputCommand command)
+    {
+        switch (command.CommandType)
+        {
+            case CommandType.Jump:
+                _jumpInput = true;
+                break;
+            case CommandType.Dodge:
+                _dodgeInput = true;
+                break;
+            case CommandType.BasicAttack:
+                _basicAttackInput = true;
+                break;
+        }
+    }
+
+    #endregion
 }

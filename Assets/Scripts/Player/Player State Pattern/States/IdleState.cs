@@ -1,26 +1,21 @@
+using System;
 using UnityEngine;
 
-public class IdleState : IState
+[Serializable]
+public class IdleState : BaseState
 {
-    private PlayerController _controller;
-    private PlayerStateCondition _stateCondition;
-
-    public IdleState(PlayerController controller)
+    public IdleState(PlayerController controller) : base(controller)
     {
-        _controller = controller;
-        _stateCondition = _controller.StateCondition;
+
     }
 
-    public void Enter()
+    public override void Enter()
     {
-        // 움직임과 관련된 애니메이션을 true로 설정
-        _controller.Anim.SetBool("IsMove", true);
-
         // Idle 상태에서의 속도를 설정
         _controller.SetTargetSpeed(0f);
     }
 
-    public void Execute()
+    public override void Execute()
     {
         // 현재 속도를 애니메이터에 전달
         _controller.Anim.SetFloat("Speed", _controller.CurrentSpeed);
@@ -29,30 +24,25 @@ public class IdleState : IState
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
         // 움직임 처리, Idle 상태에서도 걷거나 뛰다가 서서히 0으로 감속하는 시간이 필요할 수 있음
         _controller.Move();
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
 
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        // 움직임과 관련된 애니메이션을 false로 설정
-        _controller.Anim.SetBool("IsMove", false);
+
     }
 
     private void TransitionTo()
     {
-        if (_controller.InputC.DodgeInput)
-        {
-            _controller.StateMachine.Transition(_controller.StateMachine.DodgeState);
-        }
-        else if (_controller.InputC.BasicAttackInput)
+        if (_controller.InputC.BasicAttackInput)
         {
             _controller.StateMachine.Transition(_controller.StateMachine.AttackState);
         }
@@ -68,7 +58,7 @@ public class IdleState : IState
         {
             _controller.StateMachine.Transition(_controller.StateMachine.FallState);
         }
-        else if (_stateCondition.MoveInput)
+        else if (_condition.MoveInput)
         {
             // 이동 입력이 있을 경우 Jog 상태로 전환
             _controller.StateMachine.Transition(_controller.StateMachine.JogState);

@@ -2,9 +2,8 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-public class AttackState : IState
+public class AttackState : BaseState
 {
-    private PlayerController _controller;
     private PlayerAttackDataContainer _attackDataContainer;
 
     private Vector3 _target;
@@ -12,13 +11,12 @@ public class AttackState : IState
     private float _attackStartToTime = 0f;
     private float _attackStartToFixedTime = 0f;
 
-    public AttackState(PlayerController controller, PlayerAttackDataContainer attackDataContainer)
+    public AttackState(PlayerController controller, PlayerAttackDataContainer attackDataContainer) : base(controller)
     {
-        _controller = controller;
         _attackDataContainer = attackDataContainer;
     }
 
-    public void Enter()
+    public override void Enter()
     {
         Debug.Log("AttackState 진입, Combo: " + (_currentComboIndex + 1));
 
@@ -39,12 +37,12 @@ public class AttackState : IState
             _target = _controller.transform.forward * 1.3f;
     }
 
-    public void Execute()
+    public override void Execute()
     {
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
         _attackStartToFixedTime += Time.fixedDeltaTime;
         Vector3 vel = Vector3.zero;
@@ -61,12 +59,12 @@ public class AttackState : IState
         _controller.Move(vel);
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
 
     }
 
-    public void Exit()
+    public override void Exit()
     {
         _attackStartToTime = 0f;
         _attackStartToFixedTime = 0f;

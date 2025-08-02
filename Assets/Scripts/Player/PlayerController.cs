@@ -122,7 +122,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         _stateMachine?.AnimatorMove();
     }
 
-
     #region 코어 함수
 
     #region 움직임

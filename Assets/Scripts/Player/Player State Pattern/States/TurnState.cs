@@ -1,18 +1,16 @@
 using UnityEngine;
 
-public class TurnState : IState
+public class TurnState : BaseState
 {
-    private PlayerController _controller;
     private float _normalizedTime = 0f;
     private bool _hasTransitioned = false; // 턴 상태에서 Run 상태로 전환되었는지 여부
 
-
-    public TurnState(PlayerController controller)
+    public TurnState(PlayerController controller) : base(controller)
     {
-        _controller = controller;
+
     }
 
-    public void Enter()
+    public override void Enter()
     {
         Debug.Log("턴 상태 진입");
         _normalizedTime = 0f;
@@ -20,22 +18,22 @@ public class TurnState : IState
         _controller.Anim.SetTrigger("IsTurn");
     }
 
-    public void Execute()
+    public override void Execute()
     {
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
         _controller.Rotate(true, _controller.TurnSpeed);
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
 
     }
 
-    public void Exit()
+    public override void Exit()
     {
         _controller.IsTurn = false;
     }
