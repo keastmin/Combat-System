@@ -1,19 +1,17 @@
 using UnityEngine;
 
-public class DashAttackState : IState
+public class DashAttackState : BaseState
 {
-    private PlayerController _controller;
     private DashAttackData _dashAttackData;
 
     private float _dashAttackTime = 0f;
 
-    public DashAttackState(PlayerController controller, PlayerAttackDataContainer attackContainer)
+    public DashAttackState(PlayerController controller, PlayerAttackDataContainer attackContainer) : base(controller)
     {
-        _controller = controller;
         _dashAttackData = attackContainer.DashAttackData;
     }
 
-    public void Enter()
+    public override void Enter()
     {
         _controller.Anim.SetBool("IsDashAttack", true);
 
@@ -23,17 +21,17 @@ public class DashAttackState : IState
         _dashAttackTime = 0f;
     }
 
-    public void Execute()
+    public override void Execute()
     {
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
 
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
         AnimatorStateInfo stateInfo = _controller.Anim.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsName("Dash Attack"))
@@ -43,7 +41,7 @@ public class DashAttackState : IState
         }
     }
 
-    public void Exit()
+    public override void Exit()
     {
         _controller.Anim.SetBool("IsDashAttack", false);
         _dashAttackTime = 0f;

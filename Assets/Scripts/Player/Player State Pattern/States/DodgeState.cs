@@ -1,17 +1,15 @@
 using UnityEngine;
 
-public class DodgeState : IState
+public class DodgeState : BaseState
 {
-    private PlayerController _controller;
-
     private float _dodgeStartTime = 0f; // 회피 시작 시간
 
-    public DodgeState(PlayerController controller)
+    public DodgeState(PlayerController controller) : base(controller)
     {
-        _controller = controller;
+
     }
 
-    public void Enter()
+    public override void Enter()
     {
         Debug.Log("회피 상태 진입");
         _controller.Anim.SetBool("IsDodge", true); // 애니메이션 활성화
@@ -22,23 +20,23 @@ public class DodgeState : IState
         _controller.EnableGravity(false); // 회피 중 중력 비활성화
     }
 
-    public void Execute()
+    public override void Execute()
     {
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
         _controller.Rotate(true, _controller.RotationSpeed);
         _controller.Move();
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
 
     }
 
-    public void Exit()
+    public override void Exit()
     {
         _controller.IsTurn = false; // 회피 상태 종료 시 턴 상태는 해제
 

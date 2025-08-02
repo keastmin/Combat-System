@@ -1,21 +1,19 @@
 using UnityEngine;
 
-public class FallState : IState
+public class FallState : BaseState
 {
-    private PlayerController _controller;
-
-    public FallState(PlayerController controller)
+    public FallState(PlayerController controller) : base(controller)
     {
-        _controller = controller;
+
     }
 
-    public void Enter()
+    public override void Enter()
     {
         Debug.Log("낙하 상태 진입");
         _controller.Anim.SetBool("IsFalling", true);
     }
 
-    public void Execute()
+    public override void Execute()
     {
         if (_controller.InputC.MoveInput.sqrMagnitude > 0.1f && _controller.CurrentSpeed > _controller.JogSpeed + 0.1f)
         {
@@ -32,18 +30,18 @@ public class FallState : IState
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
         _controller.Move();
         _controller.Rotate(true, _controller.RotationSpeed);
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
 
     }
 
-    public void Exit()
+    public override void Exit()
     {
         _controller.IsTurn = false; // 낙하 상태 종료 시 턴 상태는 해제
 

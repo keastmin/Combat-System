@@ -17,17 +17,14 @@ public class PlayerStateMachine
     public DashAttackState DashAttackState; // 돌진 공격 상태
     public DamagedState DamagedState; // 데미지를 받은 상태
 
-    private IState _prevState; // 이전 상태 (필요시 사용 가능)
-    private IState _currState;
-    public IState PrevState => _prevState; // 이전 상태
-    public IState CurrState => _currState; // 현재 상태
-
-    private PlayerController _controller;
+    private BaseState _prevState; // 이전 상태 (필요시 사용 가능)
+    private BaseState _currState;
+    public BaseState PrevState => _prevState; // 이전 상태
+    public BaseState CurrState => _currState; // 현재 상태
 
     // 생성자를 통해 각 상태 초기화
     public PlayerStateMachine(PlayerController playerController, PlayerAttackDataContainer attackDataContainer)
     {
-        _controller = playerController;
         IdleState = new IdleState(playerController);
         WalkState = new WalkState(playerController);
         JogState = new JogState(playerController);
@@ -42,14 +39,14 @@ public class PlayerStateMachine
     }
 
     // 상태 초기화
-    public void Init(IState initState)
+    public void Init(BaseState initState)
     {
         _currState = initState;
         _currState?.Enter();
     }
 
     // 상태 전환
-    public void Transition(IState nextState)
+    public void Transition(BaseState nextState)
     {
         _currState?.Exit();
         _currState = nextState;
@@ -59,12 +56,6 @@ public class PlayerStateMachine
     // 상태 Update 반복
     public void Execute()
     {
-        if(_currState != this.DodgeState && _controller.IsDamaged)
-        {
-            Transition(DamagedState);
-            return;
-        }
-
         _currState?.Execute();
     }
 

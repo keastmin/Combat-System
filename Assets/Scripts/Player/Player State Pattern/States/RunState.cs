@@ -1,18 +1,16 @@
 using UnityEngine;
 
-public class RunState : IState
+public class RunState : BaseState
 {
-    private PlayerController _controller;
-
     private bool _isFastRun = false; // 빠른 달리기 여부
     private float _runTime = 0f; // 달리기 시간
 
-    public RunState(PlayerController controller)
+    public RunState(PlayerController controller) : base(controller)
     {
-        _controller = controller;
+
     }
 
-    public void Enter()
+    public override void Enter()
     {
         Debug.Log("달리기 상태 진입");
         _controller.Anim.SetBool("IsMove", true);
@@ -21,7 +19,7 @@ public class RunState : IState
         _runTime = 0f;
     }
 
-    public void Execute()
+    public override void Execute()
     {
         _controller.Anim.SetFloat("Speed", _controller.CurrentSpeed);
 
@@ -38,18 +36,18 @@ public class RunState : IState
         TransitionTo();
     }
 
-    public void FixedExecute()
+    public override void FixedExecute()
     {
         _controller.Rotate(true, _controller.RotationSpeed);
         _controller.Move();
     }
 
-    public void AnimatorMove()
+    public override void AnimatorMove()
     {
 
     }
 
-    public void Exit()
+    public override void Exit()
     {
         _controller.Anim.SetBool("IsMove", false);
         _controller.CanTurn = true; // 달리기 상태 종료 후 턴이 가능한 시간을 잠깐 제공

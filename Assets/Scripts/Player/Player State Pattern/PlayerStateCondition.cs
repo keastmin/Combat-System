@@ -15,6 +15,12 @@ public class PlayerStateCondition
     // 움직임 입력이 있는지 여부
     public bool MoveInput => _controller.InputC.MoveInput.sqrMagnitude > 0.01f;
 
+    // 걷기 입력이 있는지 여부
+    public bool WalkInput => _controller.InputC.WalkInput;
+
+    // 회피 입력이 있는지 여부
+    public bool DodgeInput => _controller.InputC.DodgeInput;
+
     public PlayerStateCondition(PlayerController controller)
     {
         _controller = controller;
